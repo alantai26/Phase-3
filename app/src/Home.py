@@ -50,14 +50,14 @@ if st.button("Act as James, a 2nd year applying for this co-op cycle!",
     # when user clicks the button, they are now considered authenticated
     st.session_state['authenticated'] = True
     # we set the role of the current user
-    st.session_state['role'] = 'applicant'
+    st.session_state['role'] = 'Applicant'
     # we add the first name of the user (so it can be displayed on 
     # subsequent pages). 
     st.session_state['first_name'] = 'James'
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
-    logger.info("Logging in as an Applicant Persona")
-    st.switch_page('pages/00_Applicant_Home.py')
+    logger.info("Logging in as Applicant")
+    st.switch_page('pages/00_Applicant_Page.py')
 
 if st.button('Act as Marcus, a career coach helping students with their applications!', 
             type = 'primary', 
