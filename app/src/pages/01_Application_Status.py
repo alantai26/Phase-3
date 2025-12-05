@@ -1,17 +1,22 @@
 import streamlit as st
 import pandas as pd
 import requests
+import logging
+logger = logging.getLogger(__name__)
 
-# --- PAGE CONFIGURATION ---
+from modules.nav import SideBarLinks
+
+
+
 st.set_page_config(layout="wide", page_title="Appli-Tracker")
+SideBarLinks()
 
-# --- MOCK SESSION STATE (Delete this block if you have real login logic) ---
 if 'first_name' not in st.session_state:
     st.session_state['first_name'] = 'James'
 if 'student_id' not in st.session_state:
     st.session_state['student_id'] = 888881 
 
-# --- HEADER SECTION ---
+# Creating header
 col_title, col_user = st.columns([4, 1])
 
 with col_title:
@@ -44,7 +49,7 @@ except Exception as e:
     st.error(f"Error connecting to backend: {e}")
     df = pd.DataFrame()
 
-# --- TABLE PROCESSING ---
+# Creating Table
 if not df.empty:
     if 'Status' in df.columns:
         df['Status_Normalized'] = df['Status'].str.lower()
@@ -58,15 +63,13 @@ if not df.empty:
         "offer": "🎉",
         "rejected": "😢"
     }
-    
-    df['Status_Icon'] = df['Status_Normalized'].map(status_emoji_map).fillna("❓")
 
     cols_to_keep = ['Company', 'Status_Icon', 'Resume_Used', 'Job_Board', 'App_Portal']
     cols_to_display = [c for c in cols_to_keep if c in df.columns]
     
     display_df = df[cols_to_display]
 
-    # --- MAIN TABLE DISPLAY ---
+    # Displaying the table
     st.data_editor(
         display_df,
         column_config={
@@ -101,7 +104,7 @@ if not df.empty:
 
     st.write("")
 
-    # Legend at the bottom
+    # Key at the bottom
     st.markdown(
         "<div style='text-align: center; color: grey;'>"
         "Applied ✅ &nbsp;&nbsp; Interviewing 👀 &nbsp;&nbsp; Ghosted 👻 &nbsp;&nbsp; Offer 🎉 &nbsp;&nbsp; Rejected 😢"

@@ -8,6 +8,7 @@ from backend.db_connection import db
 from backend.simple.simple_routes import simple_routes
 from backend.ngos.ngo_routes import ngos
 from backend.applications.application_routes import applications
+from backend.resumes.resume_routes import resumes
 
 def create_app():
     app = Flask(__name__)
@@ -54,6 +55,9 @@ def create_app():
     
     #Application Blueprint
     app.register_blueprint(applications, url_prefix="/app_tracker")
+
+    #Resume Blueprint
+    app.register_blueprint(resumes, url_prefix='/app_tracker')
 
     # Don't forget to return the app object
     return app
