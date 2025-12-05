@@ -9,6 +9,7 @@ from backend.simple.simple_routes import simple_routes
 from backend.ngos.ngo_routes import ngos
 from backend.applications.application_routes import applications
 from backend.resumes.resume_routes import resumes
+from backend.sysadmin.sysadmin_routes import sys_admin
 
 def create_app():
     app = Flask(__name__)
@@ -58,6 +59,9 @@ def create_app():
 
     #Resume Blueprint
     app.register_blueprint(resumes, url_prefix='/app_tracker')
+
+    #SysAdmin Blueprint
+    app.register_blueprint(sys_admin, url_prefix="/app_tracker")
 
     # Don't forget to return the app object
     return app
