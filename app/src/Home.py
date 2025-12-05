@@ -73,7 +73,7 @@ if st.button('Act as Jack, a systems administrator managing the application trac
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'administrator'
     st.session_state['first_name'] = 'SysAdmin'
-    st.switch_page('pages/20_Admin_Home.py')
+    st.switch_page('pages/20_Admin_Home_2.py')
 
 if st.button('Act as Sophia, a hiring coordinator reviewing applications for open positions!', 
             type = 'primary', 
