@@ -63,8 +63,6 @@ if not df.empty:
         "offer": "🎉",
         "rejected": "😢"
     }
-    
-    df['Status_Icon'] = df['Status_Normalized'].map(status_emoji_map).fillna("❓")
 
     cols_to_keep = ['Company', 'Status_Icon', 'Resume_Used', 'Job_Board', 'App_Portal']
     cols_to_display = [c for c in cols_to_keep if c in df.columns]

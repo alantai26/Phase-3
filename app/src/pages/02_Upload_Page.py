@@ -44,6 +44,7 @@ except Exception as e:
     st.error(f"Error connecting to backend: {e}")
     df = pd.DataFrame()
 
+# Table
 if not df.empty:
     df_display = df.rename(columns={
         "label": "Resume Label",
@@ -74,7 +75,7 @@ else:
 st.write("")
 st.write("")
 
-# 5. Upload Section
+# Upload Section
 st.markdown("### Upload New Resume")
 
 with st.container(border=True):
