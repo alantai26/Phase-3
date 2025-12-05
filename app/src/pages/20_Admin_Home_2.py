@@ -37,10 +37,10 @@ with tab1:
         
         # Initialize session state for selected metric
         if 'selected_metric' not in st.session_state:
-            st.session_state.selected_metric = 'speed'
+            st.session_state.selected_metric = 'response time'
         
-        if st.button("DB Response Time Tracker", use_container_width=True, type="primary" if st.session_state.selected_metric == 'speed' else "secondary"):
-            st.session_state.selected_metric = 'speed'
+        if st.button("DB Response Time Tracker", use_container_width=True, type="primary" if st.session_state.selected_metric == 'response time' else "secondary"):
+            st.session_state.selected_metric = 'response time'
             st.rerun()
         
         if st.button("Resource Utilization Manager", use_container_width=True, type="primary" if st.session_state.selected_metric == 'cpu' else "secondary"):
@@ -51,18 +51,18 @@ with tab1:
             st.session_state.selected_metric = 'latency'
             st.rerun()
         
-        if st.button("DB Query Frequency", use_container_width=True, type="primary" if st.session_state.selected_metric == 'traffic' else "secondary"):
-            st.session_state.selected_metric = 'traffic'
+        if st.button("DB Query Frequency", use_container_width=True, type="primary" if st.session_state.selected_metric == 'query frequency' else "secondary"):
+            st.session_state.selected_metric = 'query frequency'
             st.rerun()
     
     with col_right:
         metric_type = st.session_state.selected_metric
         
         metric_names = {
-            'speed': 'DB Query Response Time',
+            'response time': 'DB Query Response Time',
             'cpu': 'CPU Utilization',
             'latency': 'Request Latency',
-            'traffic': 'Query Frequency'
+            'query frequency': 'DB Query Frequency'
         }
         
         st.subheader(f"{metric_names.get(metric_type, 'Performance Metrics')}")

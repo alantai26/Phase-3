@@ -461,11 +461,11 @@ VALUES ('2025-10-10 15:41:00', 1, 2,
         '1 GB', 0.50, 222222, 000001);
 
 INSERT INTO PerformanceMetric (type, unit, measurement, timeStamp, metricID, adminID)
-VALUES ('speed', 'mb/s', 100.00,
+VALUES ('response time', 'ms', 100.00,
         '2025-10-10 15:41:00', 333331, 000001),
-       ('traffic', 'minute', 1.00,
+       ('query frequency', 'queries/min', 5.00,
         '2025-10-10 12:31:14', 333332, 000001),
-       ('speed', 'mb/s', 200.00,
+       ('response time', 'ms', 200.00,
         '2025-10-11 15:41:00', 333333, 000001);
 
 INSERT INTO Backup (size, status, health, datePerformed, backupID, adminID)
