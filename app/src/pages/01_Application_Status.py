@@ -60,6 +60,7 @@ def add_application_dialog():
             
         else:
             st.warning("No resumes found.")
+        job_board = st.text_input("Job Board", placeholder="e.g. LinkedIn")
 
     st.write("")
     col_submit, col_cancel = st.columns([1, 1])
@@ -77,7 +78,8 @@ def add_application_dialog():
                     "position": position,
                     "stage": stage,
                     "date_applied": str(date_applied),
-                    "resume_id": selected_resume_id
+                    "resume_id": selected_resume_id,
+                    "job_board": job_board
                 }
                 
                 try:
@@ -130,6 +132,9 @@ except Exception as e:
 
 # Creating Table
 if not df.empty:
+    if 'Date_Applied' in df.columns:
+        df['Date_Applied'] = pd.to_datetime(df['Date_Applied']).dt.date
+
     if 'Status' in df.columns:
         df['Status_Normalized'] = df['Status'].str.lower()
         
@@ -163,7 +168,7 @@ if not df.empty:
             if label not in resume_options:
                 resume_options.append(label)
 
-    cols_to_keep = ['Company', 'Position', 'Status_Icon', 'Resume_Used', 'Job_Board', 'App_Portal']
+    cols_to_keep = ['Date_Applied', 'Company', 'Position', 'Status_Icon', 'Resume_Used', 'Job_Board', 'App_Portal']
     cols_to_display = [c for c in cols_to_keep if c in df.columns]
     
     display_df = df[cols_to_display]
@@ -171,6 +176,10 @@ if not df.empty:
     st.data_editor(
         display_df,
         column_config={
+            "Date_Applied": st.column_config.DateColumn(
+                "Date Applied", 
+                format="YYYY-MM-DD"
+            ),
             "Company": st.column_config.TextColumn("Company"),
             "Position": st.column_config.TextColumn("Position"),
             "Status_Icon": st.column_config.TextColumn(

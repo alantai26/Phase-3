@@ -12,10 +12,12 @@ def get_student_applications(student_id):
         cursor = db.get_db().cursor()
         query = """
         SELECT 
+            ja.dateApplied AS Date_Applied,
             ja.companyName AS Company, 
+            ja.position AS Position,
             ja.stage AS Status, 
             r.label AS Resume_Used, 
-            COALESCE(p.name, 'Manual Add') AS Job_Board, 
+            COALESCE(ja.jobBoard, p.name, 'Manual Add') AS Job_Board, 
             COALESCE(jl.postingURL, '') AS App_Portal
         FROM JobApplication ja
         JOIN Resume r ON ja.resumeID = r.resumeID AND ja.studentID = r.studentID
@@ -44,14 +46,12 @@ def add_application(student_id):
         stage = data.get('stage')
         date_applied = data.get('date_applied')
         resume_id = data.get('resume_id')
+        job_board = data.get('job_board')
         
         last_updated = datetime.now() 
         
-        # --- CHANGE THESE TWO LINES ---
-        # Use None instead of 1. This tells SQL to insert NULL.
         listing_id = None  
         posting_id = None  
-        # ------------------------------
 
         if not company_name or not position or not stage or not resume_id:
             return jsonify({"error": "Missing required fields"}), 400
@@ -70,22 +70,24 @@ def add_application(student_id):
             studentID, 
             companyName, 
             position, 
-            stage, 
+            stage,
+            jobBoard,
             dateApplied, 
             lastUpdated, 
             resumeID, 
             listingID, 
             postingID
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         
         cursor.execute(query, (
             new_app_id, 
             student_id, 
-            company_name, 
+            company_name,
             position, 
             stage, 
+            job_board,
             date_applied, 
             last_updated, 
             resume_id, 

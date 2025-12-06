@@ -357,6 +357,7 @@ CREATE TABLE JobApplication
     dateApplied DATE,
     lastUpdated DATETIME NOT NULL,
     applicationID INT PRIMARY KEY NOT NULL,
+    jobBoard VARCHAR(50),
     studentID INT NOT NULL,
     listingID INT NOT NULL,
     postingID INT NOT NULL,
