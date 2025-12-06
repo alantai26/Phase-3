@@ -113,10 +113,23 @@ with tab2:
         st.markdown("### Backup Status & Operations")
         st.info("Last Backup: Dec 5, 2025")
         st.info("Backup Health: Healthy")
-        if st.button("Run Manual Backup", use_container_width=True):
-            st.success("Backup initiated!")
-        if st.button("Restore from Backup", use_container_width=True):
-            st.success("Backup restored!")
+        if st.button("Run Manual Backup", use_container_width=True, type="primary"):
+            try:
+                admin_id = 1 
+        
+                response = requests.post(
+                    f'http://web-api:4000/app_tracker/sysadmin/backup/{admin_id}'
+                )
+                response.raise_for_status()
+        
+                result = response.json()
+                st.success(f"✅ {result['message']} (Backup ID: {result['backupID']})")
+                #st.rerun()
+        
+            except Exception as e:
+                st.error(f"Failed to initiate backup: {str(e)}")
+                if st.button("Restore from Backup", use_container_width=True):
+                    st.success("Backup restored!")
     
     with col2:
         st.markdown("### Audit Log (Recent Activity)")

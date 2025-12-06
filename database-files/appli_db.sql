@@ -72,7 +72,7 @@ CREATE TABLE Backup
     status VARCHAR(50) NOT NULL,
     health VARCHAR(50) NOT NULL,
     datePerformed DATE,
-    backupID INT PRIMARY KEY NOT NULL,
+    backupID INT PRIMARY KEY AUTO_INCREMENT,
     adminID INT NOT NULL,
     CONSTRAINT fk_3 FOREIGN KEY (adminID)
         REFERENCES SystemAdmin (adminID)
@@ -468,12 +468,11 @@ VALUES ('response time', 'ms', 100.00,
        ('response time', 'ms', 200.00,
         '2025-10-11 15:41:00', 333333, 000001);
 
-INSERT INTO Backup (size, status, health, datePerformed, backupID, adminID)
+INSERT INTO Backup (size, status, health, datePerformed, adminID)
 VALUES (100.00, 'Good', 'Healthy', NULL,
-        444441, 000001),
+        000001),
        (50.00, 'Bad', 'Unhealthy', Null,
-        444442, 000001);
-
+        000001);
 INSERT INTO SystemUpdate (updateDate, status, updatedVersion, currentVersion, patchNotes, updateID, adminID)
 VALUES (NULL, 'Good', NULL, '1.0.0',
         NULL, 555551, 000001),

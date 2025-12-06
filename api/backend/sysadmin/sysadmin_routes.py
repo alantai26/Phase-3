@@ -38,3 +38,42 @@ def get_system_stats(metric_type, days):
         return jsonify(result[0]), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
+    
+@sys_admin.route("/sysadmin/backup/<int:admin_id>", methods=["POST"])
+def initiate_backup(admin_id):
+    try:
+        
+        if not admin_id:
+            return jsonify({"error": "Invalid admin ID"}), 400
+        
+        cursor = db.get_db().cursor()
+        query = """
+        INSERT INTO Backup (
+            datePerformed,
+            size,
+            status,
+            health,
+            adminID
+        )
+        VALUES (
+            NOW(),
+            '100',
+            'In Progress',
+            'Healthy',
+            %s
+        )
+        """
+        cursor.execute(query, (admin_id,))
+        db.get_db().commit()
+        backup_id = cursor.lastrowid
+        cursor.close()
+        
+        if not backup_id:
+            return jsonify({"message": "Backup initiation failed"}), 404
+
+        return jsonify({
+            "message": "Backup initiated successfully",
+            "backupID": backup_id,
+        }), 201
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
