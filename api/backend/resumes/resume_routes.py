@@ -12,7 +12,7 @@ def get_student_resumes(student_id):
     try:
         cursor = db.get_db().cursor()
         
-        query = "SELECT label, imageURl FROM Resume WHERE studentID = %s"
+        query = "SELECT resumeID, label, imageURl FROM Resume WHERE studentID = %s"
         cursor.execute(query, (student_id,))
         
         data = cursor.fetchall()

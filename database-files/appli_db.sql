@@ -337,9 +337,9 @@ CREATE TABLE Resume
 (
     imageURl VARCHAR(50) NOT NULL,
     label VARCHAR(50) NOT NULL,
-    resumeID INT NOT NULL,
+    resumeID INT NOT NULL AUTO_INCREMENT,
     studentID INT NOT NULL,
-    PRIMARY KEY (resumeID, studentID),
+    PRIMARY KEY (resumeID),
     CONSTRAINT fk_24 FOREIGN KEY (studentID)
         REFERENCES Student (studentID)
         ON DELETE CASCADE
