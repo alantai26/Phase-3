@@ -68,7 +68,7 @@ with tab1:
         st.subheader(f"{metric_names.get(metric_type, 'Performance Metrics')}")
         
         try:
-            response = requests.get(f'http://web-api:4000/app_tracker/sysadmin/stats?type={metric_type}&days={days}')
+            response = requests.get(f'http://web-api:4000/app_tracker/sysadmin/stats/{metric_type}/{days}')
             response.raise_for_status()
             
             data = response.json()

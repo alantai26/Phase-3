@@ -6,13 +6,11 @@ from mysql.connector import Error
 sys_admin = Blueprint("sys_admin", __name__)
 
 # Get system statistics
-@sys_admin.route("/sysadmin/stats", methods=["GET"])
-def get_system_stats():
+@sys_admin.route("/sysadmin/stats/<string:metric_type>/<int:days>", methods=["GET"])
+def get_system_stats(metric_type, days):
     try:
-        requested_metric = request.args.get('type')
-        days = request.args.get('days', '1')
         
-        if not requested_metric:
+        if not metric_type:
             return jsonify({"error": "Missing 'type' parameter"}), 400
         
         cursor = db.get_db().cursor()
@@ -30,7 +28,7 @@ def get_system_stats():
         GROUP BY type, unit
         ORDER BY avg_val DESC;
         """
-        cursor.execute(query, (requested_metric, days))
+        cursor.execute(query, (metric_type, days))
         result = cursor.fetchall()
         cursor.close()
         
