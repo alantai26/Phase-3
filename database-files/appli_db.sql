@@ -8,7 +8,7 @@ CREATE TABLE SystemAdmin
     fName VARCHAR(50) NOT NULL,
     lName VARCHAR(50) NOT NULL,
     email VARCHAR(75) NOT NULL UNIQUE,
-    adminID INT PRIMARY KEY NOT NULL,
+    adminID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     INDEX indexAdminID (adminID)
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE SystemConfigurations
     alertThresholdQueryTime BOOLEAN NOT NULL DEFAULT FALSE,
     maintenanceStartDateTime DATETIME,
     maintenanceEndDateTIme DATETIME,
-    configID INT PRIMARY KEY NOT NULL,
+    configID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     adminID INT NOT NULL,
     CONSTRAINT fk_0 FOREIGN KEY (adminID)
         REFERENCES SystemAdmin (adminID)
@@ -40,7 +40,7 @@ CREATE TABLE ResourceUsage
     numApplications INT NOT NULL DEFAULT 0,
     dbSize VARCHAR(50) NOT NULL,
     cpuUsagePct DOUBLE NOT NULL,
-    usageID INT PRIMARY KEY NOT NULL,
+    usageID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     adminID INT NOT NULL,
     CONSTRAINT fk_1 FOREIGN KEY (adminID)
         REFERENCES SystemAdmin (adminID)
@@ -56,7 +56,7 @@ CREATE TABLE PerformanceMetric
     unit VARCHAR(50) NOT NULL,
     measurement DOUBLE NOT NULL,
     timeStamp TIMESTAMP NOT NULL,
-    metricID INT PRIMARY KEY NOT NULL,
+    metricID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     adminID INT NOT NULL,
     CONSTRAINT fk_2 FOREIGN KEY (adminID)
         REFERENCES SystemAdmin (adminID)
@@ -89,7 +89,7 @@ CREATE TABLE SystemUpdate
     updatedVersion VARCHAR(50),
     currentVersion VARCHAR(50) NOT NULL,
     patchNotes VARCHAR(50),
-    updateID INT PRIMARY KEY NOT NULL,
+    updateID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     adminID INT NOT NULL,
     CONSTRAINT fk_4 FOREIGN KEY (adminID)
         REFERENCES SystemAdmin (adminID)
@@ -106,7 +106,7 @@ CREATE TABLE Alert
     message VARCHAR(50),
     isResolved BOOLEAN NOT NULL DEFAULT FALSE,
     timeStamp TIMESTAMP NOT NULL,
-    alertID INT PRIMARY KEY NOT NULL,
+    alertID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     adminID INT NOT NULL,
     usageID INT,
     backupID INT,
@@ -141,7 +141,7 @@ CREATE TABLE CareerCoach
     firstName VARCHAR(50) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
-    coachID INT PRIMARY KEY NOT NULL,
+    coachID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     INDEX indexCoachID (coachID)
 );
 
@@ -154,7 +154,7 @@ CREATE TABLE Student
     major VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'Active',
     graduationDate DATE,
-    studentID INT PRIMARY KEY NOT NULL,
+    studentID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     coachID INT NOT NULL,
     CONSTRAINT fk_14 FOREIGN KEY (coachID)
         REFERENCES CareerCoach (coachID)
@@ -170,7 +170,7 @@ CREATE TABLE HiringCoordinator
     lName VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     companyName VARCHAR(50) NOT NULL,
-    coordinatorID INT PRIMARY KEY NOT NULL,
+    coordinatorID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     INDEX indexCoordinatorID (coordinatorID)
 );
 
@@ -182,7 +182,7 @@ CREATE TABLE Audit
     action VARCHAR(50) NOT NULL,
     timeStamp TIMESTAMP NOT NULL,
     recordID INT,
-    auditID INT PRIMARY KEY NOT NULL,
+    auditID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     adminID INT,
     studentID INT,
     coordinatorID INT,
@@ -216,7 +216,7 @@ CREATE TABLE JobPosting
     status VARCHAR(50) NOT NULL DEFAULT 'Active',
     datePosted DATE NOT NULL,
     dateClosed DATE,
-    postingID INT PRIMARY KEY NOT NULL,
+    postingID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     coordinatorID INT NOT NULL,
     CONSTRAINT fk_15 FOREIGN KEY (coordinatorID)
         REFERENCES HiringCoordinator (coordinatorID)
@@ -231,7 +231,7 @@ CREATE TABLE Platform
     name VARCHAR(50) NOT NULL,
     platformType VARCHAR(50) NOT NULL,
     baseURL VARCHAR(50) NOT NULL,
-    platformID INT PRIMARY KEY NOT NULL,
+    platformID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     INDEX indexPlatformID (platformID)
 );
 
@@ -244,7 +244,7 @@ CREATE TABLE StudentProgressMetrics
     numJobApplied INT NOT NULL DEFAULT 0,
     progressID INT NOT NULL,
     studentID INT NOT NULL,
-    PRIMARY KEY (progressID, studentID),
+    PRIMARY KEY (progressID, studentID) AUTO_INCREMENT,
     CONSTRAINT fk_16 FOREIGN KEY (studentID)
         REFERENCES Student (studentID)
         ON DELETE CASCADE
@@ -263,7 +263,7 @@ CREATE TABLE JobListing
     postingURL VARCHAR(50) NOT NULL,
     listingID INT NOT NULL,
     postingID INT NOT NULL,
-    PRIMARY KEY (listingID, postingID),
+    PRIMARY KEY (listingID, postingID) AUTO_INCREMENT,
     platformID INT NOT NULL,
     CONSTRAINT fk_17 FOREIGN KEY (platformID)
         REFERENCES Platform (platformID)
@@ -282,7 +282,7 @@ CREATE TABLE Report
 (
     generatedDate DATE NOT NULL,
     summary VARCHAR(50) NOT NULL,
-    reportID INT PRIMARY KEY NOT NULL,
+    reportID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     coachID INT NOT NULL,
     CONSTRAINT fk_19 FOREIGN KEY (coachID)
         REFERENCES CareerCoach (coachID)
@@ -299,7 +299,7 @@ CREATE TABLE ReportItem
     keyFindings VARCHAR(50) NOT NULL,
     itemID INT NOT NULL,
     reportID INT NOT NULL,
-    PRIMARY KEY (itemID, reportID),
+    PRIMARY KEY (itemID, reportID) AUTO_INCREMENT,
     studentID INT NOT NULL,
     CONSTRAINT fk_20 FOREIGN KEY (reportID)
         REFERENCES Report (reportID)
@@ -319,7 +319,7 @@ CREATE TABLE coachSPM
     coachID INT NOT NULL,
     progressID INT NOT NULL,
     studentID INT NOT NULL,
-    PRIMARY KEY (coachID, progressID, studentID),
+    PRIMARY KEY (coachID, progressID, studentID) AUTO_INCREMENT,
     CONSTRAINT fk_22 FOREIGN KEY (coachID)
         REFERENCES CareerCoach (coachID)
         ON DELETE CASCADE
@@ -339,7 +339,7 @@ CREATE TABLE Resume
     label VARCHAR(50) NOT NULL,
     resumeID INT NOT NULL AUTO_INCREMENT,
     studentID INT NOT NULL,
-    PRIMARY KEY (resumeID),
+    PRIMARY KEY (resumeID) AUTO_INCREMENT,
     CONSTRAINT fk_24 FOREIGN KEY (studentID)
         REFERENCES Student (studentID)
         ON DELETE CASCADE
@@ -356,7 +356,7 @@ CREATE TABLE JobApplication
     stage VARCHAR(50),
     dateApplied DATE,
     lastUpdated DATETIME NOT NULL,
-    applicationID INT PRIMARY KEY NOT NULL,
+    applicationID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     jobBoard VARCHAR(50),
     studentID INT NOT NULL,
     listingID INT NOT NULL,
@@ -383,7 +383,7 @@ CREATE TABLE Notification
     type VARCHAR(50) NOT NULL,
     isRead BOOLEAN NOT NULL DEFAULT FALSE,
     dateTimeSent DATETIME NOT NULL,
-    notificationID INT PRIMARY KEY NOT NULL,
+    notificationID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     coachID INT,
     studentID INT,
     applicationID INT,
@@ -418,7 +418,7 @@ CREATE TABLE Message
 (
     content VARCHAR(50) NOT NULL,
     dateTimeSent DATETIME NOT NULL,
-    messageID INT PRIMARY KEY NOT NULL,
+    messageID INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     studentID INT NOT NULL,
     coachID INT NOT NULL,
     notificationID INT NOT NULL,
