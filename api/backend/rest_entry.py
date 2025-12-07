@@ -10,6 +10,8 @@ from backend.ngos.ngo_routes import ngos
 from backend.applications.application_routes import applications
 from backend.resumes.resume_routes import resumes
 from backend.sysadmin.sysadmin_routes import sys_admin
+from backend.hiringcoord.hiringcoord_routes import hiring_coord
+
 
 def create_app():
     app = Flask(__name__)
@@ -62,6 +64,9 @@ def create_app():
 
     #SysAdmin Blueprint
     app.register_blueprint(sys_admin, url_prefix="/app_tracker")
+
+    #HiringCoord Blueprint
+    app.register_blueprint(hiring_coord, url_prefix="/app_tracker")
 
     # Don't forget to return the app object
     return app
