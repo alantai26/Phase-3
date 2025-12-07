@@ -18,11 +18,7 @@ def get_coach_active_students(coach_id):
 
     if response.status_code == 200:
         active_students = response.json()
-
-        if active_students:
-            return active_students[0].get("Active_Students", 0)
-        else:
-            return 0  # No active students
+        return active_students[0].get("Active_Students", 0)
     else:
         return 0
 
@@ -55,15 +51,24 @@ def get_coach_in_progress(coach_id):
     else:
         st.error(f"Error fetching in progress students: {response.status_code}")
         return 0
-
-# Example student data (replace this with an API call)
-students = [
-    {"ID": 1, "Name": "John P.", "Stage": "Interviewing", "Last Update": "Nov. 10, 2025"},
-    {"ID": 2, "Name": "Smith L.", "Stage": "Offered", "Last Update": "Nov. 3, 2025"},
-    {"ID": 3, "Name": "Dave E.", "Stage": "Applied", "Last Update": "July 4, 2020"},
-]
-
-df_students = pd.DataFrame(students)
+    
+def get_student_activity(coach_id):
+    url = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/student_activity"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return pd.DataFrame(response.json())
+    else:
+        st.error(f"Failed to fetch student activity: {response.status_code}")
+        return pd.DataFrame()
+    
+def get_student_applications(coach_id):
+    url = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/student_applications"
+    r = requests.get(url)
+    if r.status_code == 200:
+        return pd.DataFrame(r.json())
+    else:
+        st.error("Failed to fetch student application data.")
+        return pd.DataFrame()
 
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
@@ -74,6 +79,9 @@ st.title('Career Coach Dashboard')
 tab1, tab2 = st.tabs(["Career Coach Dashboard", "Messages & Notifications"])
 
 with tab1:
+  # ==============================================
+  # Summary Metrics
+  # ==============================================
   st.subheader("Summary Metrics", divider="gray")
   col1, col2, col3 = st.columns(3)
 
@@ -84,6 +92,11 @@ with tab1:
   col1.write(f"Active Students: {r1}")
   col2.write(f"Roles Secured: {r2}")
   col3.write(f"In Progress: {r3}")
+
+
+  # ==============================================
+  # Student Activity Table with Filters
+  # ==============================================
 
   st.subheader("Student Activity", divider="gray")
   col_stage, col_sort, col_search, col_add, col_remove = st.columns(5)
@@ -106,75 +119,139 @@ with tab1:
   with col_add:
     add_student_id = st.text_input("Enter Student ID to Add", key="add_id")
     if st.button("Add Student", use_container_width=True):  
-        st.info("Add Student functionality coming soon!")
+        if add_student_id.strip():
+            API_URL = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/add_student"
+            payload = {"student_id": int(add_student_id)}
+            r = requests.post(API_URL, json=payload)
+            if r.status_code == 200:
+                st.success(f"Student {add_student_id} added successfully!")
+            else:
+                st.error(f"Failed to add student: {r.text}")
+        else:
+            st.warning("Please enter a Student ID to add.")
 
   with col_remove:
     remove_student_id = st.text_input("Enter Student ID to Remove", key="remove_id")
     if st.button("Remove Student", use_container_width=True):
-        st.info("Remove Student functionality coming soon!")
+        if remove_student_id.strip().isdigit():
+            student_id = int(remove_student_id)
+            API_URL = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/remove_student/{student_id}"
+            response = requests.put(API_URL)
 
-  # Apply filters
-  filtered_students = df_students.copy()
+            if response.status_code == 200:
+                st.success(f"Student {student_id} successfully removed from your coaching list.")
+            else:
+                st.error(f"Failed to remove student: {response.json().get('message', response.text)}")
+        else:
+            st.warning("Please enter a valid student ID.")
 
-  # Filter by stage
+  df = get_student_activity(coach_id)
 
-  # search by name
+  # Filter by stage (case-insensitive)
+  if stage != "All":
+      df = df[df['Stage'].str.lower() == stage.lower()]
 
-  # Sort by stage
+  # Search by name
+  if search_term.strip():
+      df = df[df["Name"].str.contains(search_term, case=False, na=False)]
+
+  # Sort by stage if selected
+  if sort_by:
+      df = df.sort_values(by="Stage")
+
+  # todo: implement add/remove student functionality!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   # display the table
-  st.dataframe(filtered_students, use_container_width=True)
+  st.dataframe(df, use_container_width=True)
+
+
+  # ==============================================
+  # Charts & Insights
+  # ==============================================
 
   st.subheader("Charts & Insights", divider="gray")
   col_pie, col_bar = st.columns(2)
-
-  students = df_students.copy()
-
-  # pie chart
-  students['Role Secured'] = ['Intern', 'Intern', 'SWE']  # dummy values, will need to fix later
   
-  stage_counts = students['Stage'].value_counts()
-  fig1, ax1 = plt.subplots()
-  ax1.pie(stage_counts, labels=stage_counts.index, autopct='%1.1f%%', startangle=90)
-  ax1.set_title("Student Stage Distribution")
-  col_pie.pyplot(fig1, use_container_width=True)
+  applications_df = get_student_applications(coach_id)
 
-  # dummy data. need to get data from DB
-  offers_data = [
-    {"studentID": 888881, "dateApplied": "2025-01-10", "stage": "Offered"},
-    {"studentID": 888882, "dateApplied": "2025-01-15", "stage": "Offered"},
-    {"studentID": 888881, "dateApplied": "2025-02-20", "stage": "Offered"},
-    {"studentID": 888882, "dateApplied": "2025-03-05", "stage": "Offered"},
-    {"studentID": 888882, "dateApplied": "2025-03-20", "stage": "Offered"},
-  ]
+  # Remove rows where student has no job applications
+  applications_df = applications_df[applications_df['applicationID'].notna()]
 
-  offers_df = pd.DataFrame(offers_data)
+  if not applications_df.empty:
 
-  # Keep only 'Offered' stages
-  offers_df = offers_df[offers_df['stage'] == 'Offered']
+  # ==============================================
+  # Pie Chart
+  # ==============================================
 
-  # Convert dateApplied to datetime
-  offers_df['dateApplied'] = pd.to_datetime(offers_df['dateApplied'])
+    # Create normalized category column
+    applications_df['stage_category'] = applications_df['stage'].str.lower().map({
+        # Applied
+        "applied": "Applied",
+        "application submitted": "Applied",
 
-  # Extract month number
-  offers_df['month'] = offers_df['dateApplied'].dt.month
+        # Interviewing
+        "interviewing": "Interviewing",
+        "phone screen": "Interviewing",
+        "technical interview": "Interviewing",
+        "onsite": "Interviewing",
+        "behavioral interview": "Interviewing",
 
-  # Group by month and count offers
-  monthly_offers = offers_df.groupby('month').size().reindex(range(1, 13), fill_value=0)
+        # Offered
+        "offered": "Offered",
+        "offer": "Offered"
+    })
 
-  # Plot bar chart
-  fig, ax = plt.subplots()
-  months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  ax.bar(months, monthly_offers, color='skyblue')
-  ax.set_title("Offers by Month")
-  ax.set_ylabel("Number of Offers")
-  ax.set_xlabel("Month")
+    # Count the 3 major groups
+    stage_counts = applications_df['stage_category'].value_counts()
 
-  # Force y-axis to show only natural numbers
-  ax.yaxis.set_major_locator(mticker.MaxNLocator(integer=True))
+    # Generate pie chart
+    fig1, ax1 = plt.subplots()
+    ax1.pie(stage_counts, labels=stage_counts.index, autopct='%1.1f%%', startangle=90)
+    ax1.set_title("Student Activity Distribution")
 
-  col_bar.pyplot(fig, use_container_width=True)
+    col_pie.pyplot(fig1, use_container_width=True)
+
+
+  # ==============================================
+  # Bar Chart 
+  # ==============================================
+
+    # Keep only "Offered"
+    offers_df = applications_df[applications_df['stage_category'] == "Offered"].copy()
+
+    # Convert to datetime
+    offers_df['dateApplied'] = pd.to_datetime(offers_df['dateApplied'])
+
+    # Extract month (1–12)
+    offers_df['month'] = offers_df['dateApplied'].dt.month
+
+    # Count offers per month, ensure all months exist
+    monthly_offers = offers_df.groupby('month').size().reindex(range(1, 13), fill_value=0)
+
+    # Bar chart
+    fig, ax = plt.subplots()
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    ax.bar(months, monthly_offers)
+    ax.set_title("Offers by Month")
+    ax.set_ylabel("Number of Offers")
+    ax.set_xlabel("Month")
+    
+    max_val = monthly_offers.max()
+
+    if max_val == 0:
+        ax.set_ylim(0, 3)
+    else:
+        ax.set_ylim(0, max_val + 1)
+
+    ax.yaxis.set_major_locator(mticker.MultipleLocator(1))
+
+    col_bar.pyplot(fig, use_container_width=True)
+
+  else:
+    col_pie.write("No application data available for pie chart.")
+    col_bar.write("No application data available for bar chart.")
 
 with tab2:
   st.subheader("Notifications", divider="gray")

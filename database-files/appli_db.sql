@@ -453,6 +453,9 @@ INSERT INTO CareerCoach (firstName, lastName, email)
 VALUES ('Marcus', 'Smith', 'marcussmith@gmail.com'),
        ('Joe', 'Johnson', 'joeJohnson@gmail.com');
 
+INSERT INTO CareerCoach (firstName, lastName, email, coachID)
+VALUES ('Unassigned', 'Unassigned', 'Unassigned', -1);
+
 INSERT INTO CareerCoach (firstName, lastName, email) VALUES
 ('Angelo', 'Shalders', 'ashalders0@guardian.co.uk'),
 ('Cozmo', 'Balshen', 'cbalshen1@myspace.com'),
@@ -560,7 +563,8 @@ VALUES
 
 INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID)
 VALUES ('James', 'Jane', 'jamesjane@gmail.com', 'Computer Science', NULL, 1),
-       ('Alice', 'Bob', 'alicebob@gmail.com', 'Math', NULL, 2);
+       ('Alice', 'Bob', 'alicebob@gmail.com', 'Math', NULL, 2),
+       ('Mary', 'Smith', 'marysmith@gmail.com', 'Physics', NULL, 1);
 
 INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID) VALUES
 ('Debee', 'Guilaem', 'dguilaem0@vistaprint.com', 'Data Science', '2027-06-21', 3),
@@ -859,14 +863,17 @@ VALUES (1, 155551, 1),
 INSERT INTO Resume (resumeID, studentID, imageURl, label)
 VALUES (199991, 1, 'imageurl.com', 'Final Resume'),
        (199992, 2, 'word.com', 'Updated Resume'),
-       (199993, 1, '/docs/resumes/student_888881.pdf', 'Software Engineer Focused');
+       (199993, 1, '/docs/resumes/student_888881.pdf', 'Software Engineer Focused'),
+       (199994, 43, '/docs/resumes/student_888882.pdf', 'Data Science Focused');
 
 INSERT INTO JobApplication (companyName, position, stage, dateApplied, lastUpdated, 
                             studentID, listingID, postingID, resumeID)
 VALUES ('McDonald''s', 'burger flipper', 'applied', '2024-10-10', '2024-10-10', 
         1, 166661, 1, 199991),
        ('Amazon', 'SWE', 'Rejected', '2024-10-11', '2024-10-11', 
-        2, 166662, 2, 199992);
+        2, 166662, 2, 199992),
+       ('Walmart', 'cashier', 'offered', '2024-10-12', '2024-10-12', 
+        1, 166661, 1, 199991);
 
 INSERT INTO JobApplication 
     (companyName, position, stage, dateApplied, lastUpdated, jobBoard, 
