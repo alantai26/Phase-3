@@ -11,6 +11,7 @@ from backend.applications.application_routes import applications
 from backend.resumes.resume_routes import resumes
 from backend.sysadmin.sysadmin_routes import sys_admin
 from backend.hiringcoord.hiringcoord_routes import hiring_coord
+from backend.career_coach.career_coach_routes import career_coach
 
 
 def create_app():
@@ -68,6 +69,9 @@ def create_app():
     #HiringCoord Blueprint
     app.register_blueprint(hiring_coord, url_prefix="/app_tracker")
 
+    # Career Coach Blueprint
+    app.register_blueprint(career_coach, url_prefix="/app_tracker")
+    
     # Don't forget to return the app object
     return app
 
