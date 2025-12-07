@@ -15,6 +15,15 @@ if 'first_name' not in st.session_state:
     st.session_state['first_name'] = 'James'
 if 'student_id' not in st.session_state:
     st.session_state['student_id'] = 1 
+STATUS_DISPLAY_MAP = {
+    "Applied": "✅",
+    "Interviewing": "👀",
+    "Ghosted": "👻",
+    "Offer": "🎉",
+    "Rejected": "😢"
+}
+
+STATUS_SAVE_MAP = {v: k.capitalize() for k, v in STATUS_DISPLAY_MAP.items()}
 
 resume_map = {} 
 resume_options = []
@@ -158,6 +167,9 @@ if not df.empty:
     if 'Date_Applied' in df.columns:
         df['Date_Applied'] = pd.to_datetime(df['Date_Applied']).dt.date
 
+    if 'Status' in df.columns:
+        df['Status'] = df['Status'].map(STATUS_DISPLAY_MAP).fillna(df['Status'])
+        
     # Sorting
     if sort_option == "Date Added":
         df = df.sort_values(by="Date_Applied", ascending=False)
@@ -183,8 +195,8 @@ if not df.empty:
         column_config={
             # The Delete Action
             "Delete": st.column_config.CheckboxColumn(
-                "Delete?",
-                help="Check to delete this application immediately",
+                "🗑️?",
+                width="small",
                 default=False
             ),
             "applicationID": None,
@@ -195,9 +207,10 @@ if not df.empty:
             
             "Status": st.column_config.SelectboxColumn(
                 "Status",
-                options=["Applied", "Interviewing", "Ghosted", "Offer", "Rejected"],
+                options=list(STATUS_DISPLAY_MAP.values())[:5], 
                 required=True
             ),
+
             "Resume_Used": st.column_config.SelectboxColumn(
                 "Resume Used",
                 width="medium",
