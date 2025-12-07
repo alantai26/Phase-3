@@ -63,9 +63,9 @@ if st.button('Act as Marcus, a career coach helping students with their applicat
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'career_couch'
-    st.session_state['first_name'] = 'Mohammad'
-    st.switch_page('pages/10_USAID_Worker_Home.py')
+    st.session_state['role'] = 'career_coach'
+    st.session_state['first_name'] = 'Marcus'
+    st.switch_page('pages/50_Career_Coach_Home.py')
 
 if st.button('Act as Jack, a systems administrator managing the application tracking system!', 
             type = 'primary', 
