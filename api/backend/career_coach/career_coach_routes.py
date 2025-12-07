@@ -13,6 +13,69 @@ from backend.db_connection import db
 # Create a Blueprint for career_coach
 career_coach = Blueprint("career_coach", __name__)
 
+@career_coach.route("/career_coach/<int:coach_id>/active_students", methods=["GET"])
+def get_active_students(coach_id):
+    try:
+        cursor = db.get_db().cursor()
+
+        # Query to count Active Students
+        cursor.execute("""
+        SELECT COUNT(*) AS Active_Students
+        FROM Student s
+        JOIN CareerCoach cc ON s.coachID = cc.coachID
+        WHERE cc.coachID = %s AND s.status = 'Active'
+        """, (coach_id,))
+        active_students = cursor.fetchall()
+        cursor.close()
+
+        # Return the result as a JSON response
+        return jsonify(active_students), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@career_coach.route("/career_coach/<int:coach_id>/roles_secured", methods=["GET"])
+def get_roles_secured(coach_id):
+    try:
+        cursor = db.get_db().cursor()
+
+        # Query to count Roles Secured (Stage = 'Offered')
+        cursor.execute("""
+        SELECT COUNT(DISTINCT ja.studentID) AS Roles_Secured
+        FROM JobApplication ja
+        JOIN Student s ON ja.studentID = s.studentID
+        JOIN CareerCoach cc ON s.coachID = cc.coachID
+        WHERE cc.coachID = %s AND ja.stage = 'Offered'
+        """, (coach_id,))
+        roles_secured = cursor.fetchall()
+        cursor.close()
+
+        # Return the result as a JSON response
+        return jsonify(roles_secured), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@career_coach.route("/career_coach/<int:coach_id>/in_progress", methods=["GET"])
+def get_in_progress(coach_id):
+    try:
+        cursor = db.get_db().cursor()
+
+        # Query to count In Progress (Stage = 'Applied' or 'Interviewing')
+        cursor.execute("""
+        SELECT COUNT(DISTINCT ja.studentID) AS In_Progress
+        FROM JobApplication ja
+        JOIN Student s ON ja.studentID = s.studentID
+        JOIN CareerCoach cc ON s.coachID = cc.coachID
+        WHERE cc.coachID = %s AND ja.stage IN ('Applied', 'Interviewing')
+        """, (coach_id,))
+        in_progress = cursor.fetchall()
+        cursor.close()
+
+        # Return the result as a JSON response
+        return jsonify(in_progress), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # Get all students for a specific career coach
 @career_coach.route("/career_coach/<int:coach_id>/students", methods=["GET"])
 def get_coach_students(coach_id):
@@ -35,4 +98,31 @@ def get_coach_students(coach_id):
         return jsonify(students), 200
 
     except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@career_coach.route("/career_coach/all", methods=["GET"])
+def get_all_coaches():
+    try:
+        cursor = db.get_db().cursor()
+
+        # Query to get all coaches with their details
+        cursor.execute("""
+        SELECT 
+            coachID, firstName, lastName, email
+        FROM CareerCoach
+        """)
+
+        coaches = cursor.fetchall()
+        cursor.close()
+
+        # Check if coaches are found
+        if coaches:
+            # Return the list of coaches as JSON
+            return jsonify(coaches), 200
+        else:
+            return jsonify({"message": "No coaches found."}), 404
+
+    except Exception as e:
+        # Return an error message if the query fails
         return jsonify({"error": str(e)}), 500

@@ -10,6 +10,52 @@ import requests
 
 st.set_page_config(layout = 'wide')
 
+coach_id = st.session_state.get('coach_id')
+
+def get_coach_active_students(coach_id):
+    API_URL = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/active_students"
+    response = requests.get(API_URL)
+
+    if response.status_code == 200:
+        active_students = response.json()
+
+        if active_students:
+            return active_students[0].get("Active_Students", 0)
+        else:
+            return 0  # No active students
+    else:
+        return 0
+
+def get_coach_roles_secured(coach_id):
+    API_URL = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/roles_secured"
+    response = requests.get(API_URL)
+
+    if response.status_code == 200:
+        roles_secured = response.json()
+
+        if roles_secured:
+            return roles_secured[0].get("Roles_Secured", 0)
+        else:
+            return 0  # No roles secured
+    else:
+        st.error(f"Error fetching roles secured: {response.status_code}")
+        return 0
+
+
+def get_coach_in_progress(coach_id):
+    API_URL = f"http://web-api:4000/app_tracker/career_coach/{coach_id}/in_progress"
+    response = requests.get(API_URL)
+    
+    if response.status_code == 200:
+        in_progress = response.json()
+        if in_progress:
+            return in_progress[0].get("In_Progress", 0)
+        else:
+            return 0  # No in progress students
+    else:
+        st.error(f"Error fetching in progress students: {response.status_code}")
+        return 0
+
 # Example student data (replace this with an API call)
 students = [
     {"ID": 1, "Name": "John P.", "Stage": "Interviewing", "Last Update": "Nov. 10, 2025"},
@@ -30,9 +76,14 @@ tab1, tab2 = st.tabs(["Career Coach Dashboard", "Messages & Notifications"])
 with tab1:
   st.subheader("Summary Metrics", divider="gray")
   col1, col2, col3 = st.columns(3)
-  col1.write("Active Students: ")
-  col2.write("Roles Secured: ")
-  col3.write("In Progress: ")
+
+  r1 = get_coach_active_students(coach_id)
+  r2 = get_coach_roles_secured(coach_id)
+  r3 = get_coach_in_progress(coach_id)
+
+  col1.write(f"Active Students: {r1}")
+  col2.write(f"Roles Secured: {r2}")
+  col3.write(f"In Progress: {r3}")
 
   st.subheader("Student Activity", divider="gray")
   col_stage, col_sort, col_search, col_add, col_remove = st.columns(5)
@@ -41,7 +92,7 @@ with tab1:
     stage = st.selectbox(
       "Stage", 
       options=["All", "Applied", "Interviewing", "Offered", "Accepted", "Rejected"],
-      index=1)
+      index=0)
     
   with col_sort:
     sort_by = st.selectbox(
