@@ -453,7 +453,7 @@ INSERT INTO CareerCoach (firstName, lastName, email)
 VALUES ('Marcus', 'Smith', 'marcussmith@gmail.com'),
        ('Joe', 'Johnson', 'joeJohnson@gmail.com');
 
-INSERT INTO CareerCoach (firstName, last_name, email) VALUES
+INSERT INTO CareerCoach (firstName, lastName, email) VALUES
 ('Angelo', 'Shalders', 'ashalders0@guardian.co.uk'),
 ('Cozmo', 'Balshen', 'cbalshen1@myspace.com'),
 ('Nelli', 'Rann', 'nrann2@usda.gov'),
@@ -550,14 +550,19 @@ INSERT INTO HiringCoordinator (fName, lName, email, CompanyName) VALUES
 
 -- NO EXTRA DATA NEEDED
 INSERT INTO Platform (name, platformType, baseURL)
-VALUES ('LinkedIn', 'Online', 'https://www.linkedin.com/'),
-       ('NUworks', 'Online', 'https://northeastern-csm.symplicity.com/students/');
+VALUES
+    ( 'LinkedIn',     'Online', 'https://www.linkedin.com/' ),
+    ( 'NUworks',      'Online', 'https://northeastern-csm.symplicity.com/students/' ),
+    ( 'Handshake',    'Online', 'https://joinhandshake.com/' ),
+    ( 'Company Site', 'Online', 'https://example.com/' ),
+    ( 'Indeed',       'Online', 'https://www.indeed.com/' );
+
 
 INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID)
 VALUES ('James', 'Jane', 'jamesjane@gmail.com', 'Computer Science', NULL, 1),
        ('Alice', 'Bob', 'alicebob@gmail.com', 'Math', NULL, 2);
 
-INSERT INTO Student (firstName, last_name, email, major, `graduation Data`, coachID) VALUES
+INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID) VALUES
 ('Debee', 'Guilaem', 'dguilaem0@vistaprint.com', 'Data Science', '2027-06-21', 3),
 ('Clifford', 'Guile', 'cguile1@homestead.com', 'Healthcare Management', '2029-03-24', 4),
 ('Carlen', 'Ridgedell', 'cridgedell2@gizmodo.com', 'Geology', '2029-03-30', 5),
@@ -698,56 +703,56 @@ VALUES
 ('Backup',        'Low',      'Incremental backup completed',               TRUE,  '2025-11-04 04:05:00', 1, 17, 1, 15, 1),
 ('Performance',   'Low',      'CPU usage returned to normal range',         TRUE,  '2025-11-05 09:35:00', 1, 18, NULL, 16, NULL),
 ('SystemUpdate',  'Medium',   'Application update scheduled for weekend',   FALSE, '2025-11-06 14:00:00', 1, NULL, NULL, NULL, 2),
-('Database',      'High',     'Connection pool near maximum capacity',      FALSE, '2025-11-07 15:10:00', 1, 19, NULL, 17, NULL),
+('Database',      'High',     'Connection pool near maximum capacity',      FALSE, '2025-11-07 15:10:00', 1, 19, NULL, 13, NULL),
 ('Security',      'Low',      'New admin account created',                  TRUE,  '2025-11-08 16:40:00', 1, NULL, NULL, NULL, NULL),
-('Performance',   'Medium',   'Latency variability increased slightly',     FALSE, '2025-11-09 18:05:00', 1, 20, NULL, 18, NULL),
-('Backup',        'Medium',   'Old backups approaching retention limit',    FALSE, '2025-11-10 07:55:00', 1, 21, 2, 19, NULL);
+('Performance',   'Medium',   'Latency variability increased slightly',     FALSE, '2025-11-09 18:05:00', 1, 20, NULL, 14, NULL),
+('Backup',        'Medium',   'Old backups approaching retention limit',    FALSE, '2025-11-10 07:55:00', 1, 21, 2, 15, NULL);
 
 INSERT INTO JobPosting (title, roleType, location, department, datePosted, dateClosed, coordinatorID)
 VALUES ('Mcdonald flipper', 'Burger Flipper', 'Boston', 'Kitchen', '2025-07-10', NULL, 1),
        ('SWE', 'SWE', 'Seattle', 'AWS', '2020-06-11', NULL, 2);
 
 INSERT INTO JobPosting (title, roleType, location, department, datePosted, dateClosed, coordinatorID) VALUES
-('Business Systems Development Analyst', 'VP Product Management', 'Yashiro', 'Marketing', '2024-10-07', '8/31/2025', 1),
-('Financial Analyst', 'Chief Design Engineer', 'Gorelki', 'Support', '2025-11-14', '6/30/2025', 2),
-('Computer Systems Analyst IV', 'Product Engineer', 'São Vicente de Ferreira', 'Training', '2024-10-19', '8/20/2025', 3),
-('Database Administrator II', 'Teacher', 'Gourcy', 'Marketing', '2024-11-11', '7/17/2025', 4),
-('Help Desk Technician', 'Payment Adjustment Coordinator', 'Anta', 'Research and Development', '2024-11-17', '3/29/2025', 5),
-('Electrical Engineer', 'Legal Assistant', 'Pomacocha', 'Business Development', '2024-11-10', '5/20/2025', 1),
-('Administrative Officer', 'Computer Systems Analyst IV', 'San Carlos', 'Accounting', '2025-06-03', '8/7/2025', 2),
-('Account Executive', 'Nuclear Power Engineer', 'Itapeva', 'Engineering', '2025-08-02', '3/2/2025', 3),
-('Administrative Officer', 'VP Product Management', 'Cipaku', 'Research and Development', '2025-12-04', '5/9/2025', 4),
-('Geological Engineer', 'Financial Advisor', 'Biyan', 'Sales', '2024-10-28', '2/9/2025', 5),
-('Senior Sales Associate', 'Programmer II', 'Duekoué', 'Engineering', '2025-06-17', '8/27/2025', 1),
-('Marketing Manager', 'VP Product Management', 'Opočno', 'Engineering', '2025-09-26', '9/28/2025', 2),
-('Safety Technician IV', 'Cost Accountant', 'Losevo', 'Services', '2025-05-29', '3/17/2025', 3),
-('Civil Engineer', 'Software Engineer III', 'Ikhtiman', 'Sales', '2025-05-02', '3/31/2025', 4),
-('Senior Editor', 'Web Developer I', 'Nchelenge', 'Product Management', '2025-11-05', '8/11/2025', 5),
-('Junior Executive', 'Quality Engineer', 'Yabēlo', 'Support', '2025-11-27', '11/27/2025', 1),
-('Statistician II', 'Executive Secretary', 'Rýmařov', 'Legal', '2024-12-26', '7/2/2025', 2),
-('Health Coach I', 'Media Manager II', 'Badeggi', 'Accounting', '2025-02-18', '8/19/2025', 3),
-('Account Coordinator', 'Director of Sales', 'Shiqiao', 'Research and Development', '2025-06-02', '3/3/2025', 4),
-('Recruiting Manager', 'Staff Accountant III', 'Parreira', 'Research and Development', '2025-08-20', '6/20/2025', 5),
-('Project Manager', 'Assistant Manager', 'Lesozavodsk', 'Services', '2025-04-01', '10/10/2025', 1),
-('Account Coordinator', 'Account Executive', 'Guohe', 'Human Resources', '2025-06-08', '4/28/2025', 2),
-('Environmental Tech', 'Technical Writer', 'Khanabad', 'Sales', '2024-10-15', '9/8/2025', 3),
-('Analyst Programmer', 'Actuary', 'Concepción Tutuapa', 'Human Resources', '2025-03-19', '2/4/2025', 4),
-('Senior Cost Accountant', 'Quality Engineer', 'Batanovtsi', 'Business Development', '2025-03-25', '10/5/2025', 5),
-('Statistician II', 'Help Desk Technician', 'Papringan', 'Support', '2025-05-05', '9/1/2025', 1),
-('Mechanical Systems Engineer', 'Cost Accountant', 'San Felipe', 'Research and Development', '2025-06-09', '2/8/2025', 2),
-('Social Worker', 'Programmer Analyst III', 'Wulan Haye', 'Services', '2025-07-23', '9/3/2025', 3),
-('Mechanical Systems Engineer', 'Civil Engineer', 'Khilok', 'Research and Development', '2025-05-22', '6/20/2025', 4),
-('Account Coordinator', 'Teacher', 'Mayisad', 'Marketing', '2025-07-28', '3/31/2025', 5),
-('Automation Specialist IV', 'VP Accounting', 'Pawa', 'Research and Development', '2025-10-08', '12/3/2025', 1),
-('VP Accounting', 'Executive Secretary', 'Svojat', 'Business Development', '2025-09-05', '6/22/2025', 2),
-('Graphic Designer', 'Chief Design Engineer', 'Jingyang', 'Marketing', '2025-04-16', '6/29/2025', 3),
-('Research Assistant I', 'Paralegal', 'Dzoraghbyur', 'Marketing', '2025-09-23', '5/23/2025', 4),
-('Registered Nurse', 'Sales Representative', 'Bosilovo', 'Support', '2025-11-02', '9/29/2025', 5),
-('Quality Control Specialist', 'Desktop Support Technician', 'Avallon', 'Support', '2025-06-30', '8/23/2025', 1),
-('Project Manager', 'Nurse Practicioner', 'Fengyang', 'Marketing', '2025-03-29', '8/1/2025', 2),
-('Business Systems Development Analyst', 'Help Desk Technician', 'Weiwangzhuang', 'Training', '2025-08-13', '7/30/2025', 3),
-('Registered Nurse', 'Account Representative I', 'Blois', 'Sales', '2024-10-13', '5/14/2025', 4),
-('Developer IV', 'Recruiter', 'Bang Kaeo', 'Services', '2025-11-21', '1/16/2025', 5);
+('Business Systems Development Analyst', 'VP Product Management', 'Yashiro', 'Marketing', '2024-10-07', '2025-08-31', 1),
+('Financial Analyst', 'Chief Design Engineer', 'Gorelki', 'Support', '2025-11-14', '2025-06-30', 2),
+('Computer Systems Analyst IV', 'Product Engineer', 'São Vicente de Ferreira', 'Training', '2024-10-19', '2025-08-20', 3),
+('Database Administrator II', 'Teacher', 'Gourcy', 'Marketing', '2024-11-11', '2025-07-17', 4),
+('Help Desk Technician', 'Payment Adjustment Coordinator', 'Anta', 'Research and Development', '2024-11-17', '2025-03-29', 5),
+('Electrical Engineer', 'Legal Assistant', 'Pomacocha', 'Business Development', '2024-11-10', '2025-05-20', 1),
+('Administrative Officer', 'Computer Systems Analyst IV', 'San Carlos', 'Accounting', '2025-06-03', '2025-08-07', 2),
+('Account Executive', 'Nuclear Power Engineer', 'Itapeva', 'Engineering', '2025-08-02', '2025-03-02', 3),
+('Administrative Officer', 'VP Product Management', 'Cipaku', 'Research and Development', '2025-12-04', '2025-05-09', 4),
+('Geological Engineer', 'Financial Advisor', 'Biyan', 'Sales', '2024-10-28', '2025-02-09', 5),
+('Senior Sales Associate', 'Programmer II', 'Duekoué', 'Engineering', '2025-06-17', '2025-08-27', 1),
+('Marketing Manager', 'VP Product Management', 'Opočno', 'Engineering', '2025-09-26', '2025-09-28', 2),
+('Safety Technician IV', 'Cost Accountant', 'Losevo', 'Services', '2025-05-29', '2025-03-17', 3),
+('Civil Engineer', 'Software Engineer III', 'Ikhtiman', 'Sales', '2025-05-02', '2025-03-31', 4),
+('Senior Editor', 'Web Developer I', 'Nchelenge', 'Product Management', '2025-11-05', '2025-08-11', 5),
+('Junior Executive', 'Quality Engineer', 'Yabēlo', 'Support', '2025-11-27', '2025-11-27', 1),
+('Statistician II', 'Executive Secretary', 'Rýmařov', 'Legal', '2024-12-26', '2025-07-02', 2),
+('Health Coach I', 'Media Manager II', 'Badeggi', 'Accounting', '2025-02-18', '2025-08-19', 3),
+('Account Coordinator', 'Director of Sales', 'Shiqiao', 'Research and Development', '2025-06-02', '2025-03-03', 4),
+('Recruiting Manager', 'Staff Accountant III', 'Parreira', 'Research and Development', '2025-08-20', '2025-06-20', 5),
+('Project Manager', 'Assistant Manager', 'Lesozavodsk', 'Services', '2025-04-01', '2025-10-10', 1),
+('Account Coordinator', 'Account Executive', 'Guohe', 'Human Resources', '2025-06-08', '2025-04-28', 2),
+('Environmental Tech', 'Technical Writer', 'Khanabad', 'Sales', '2024-10-15', '2025-09-08', 3),
+('Analyst Programmer', 'Actuary', 'Concepción Tutuapa', 'Human Resources', '2025-03-19', '2025-02-04', 4),
+('Senior Cost Accountant', 'Quality Engineer', 'Batanovtsi', 'Business Development', '2025-03-25', '2025-10-05', 5),
+('Statistician II', 'Help Desk Technician', 'Papringan', 'Support', '2025-05-05', '2025-09-01', 1),
+('Mechanical Systems Engineer', 'Cost Accountant', 'San Felipe', 'Research and Development', '2025-06-09', '2025-02-08', 2),
+('Social Worker', 'Programmer Analyst III', 'Wulan Haye', 'Services', '2025-07-23', '2025-09-03', 3),
+('Mechanical Systems Engineer', 'Civil Engineer', 'Khilok', 'Research and Development', '2025-05-22', '2025-06-20', 4),
+('Account Coordinator', 'Teacher', 'Mayisad', 'Marketing', '2025-07-28', '2025-03-31', 5),
+('Automation Specialist IV', 'VP Accounting', 'Pawa', 'Research and Development', '2025-10-08', '2025-12-03', 1),
+('VP Accounting', 'Executive Secretary', 'Svojat', 'Business Development', '2025-09-05', '2025-06-22', 2),
+('Graphic Designer', 'Chief Design Engineer', 'Jingyang', 'Marketing', '2025-04-16', '2025-06-29', 3),
+('Research Assistant I', 'Paralegal', 'Dzoraghbyur', 'Marketing', '2025-09-23', '2025-05-23', 4),
+('Registered Nurse', 'Sales Representative', 'Bosilovo', 'Support', '2025-11-02', '2025-09-29', 5),
+('Quality Control Specialist', 'Desktop Support Technician', 'Avallon', 'Support', '2025-06-30', '2025-08-23', 1),
+('Project Manager', 'Nurse Practicioner', 'Fengyang', 'Marketing', '2025-03-29', '2025-08-01', 2),
+('Business Systems Development Analyst', 'Help Desk Technician', 'Weiwangzhuang', 'Training', '2025-08-13', '2025-07-30', 3),
+('Registered Nurse', 'Account Representative I', 'Blois', 'Sales', '2024-10-13', '2025-05-14', 4),
+('Developer IV', 'Recruiter', 'Bang Kaeo', 'Services', '2025-11-21', '2025-01-16', 5);
 
 
 INSERT INTO StudentProgressMetrics (progressID, studentID, lastActivityDate, offersReceived, interviewsScheduled, numJobApplied)
@@ -928,11 +933,19 @@ VALUES
 ('Notion',       'Product Engineer Intern',       'Interviewing', '2024-10-01', '2024-10-09 16:10:00', 'Company Site', 2, 200024, 25, 199992);
 
 
-INSERT INTO Notification (type, dateTimeSent, coachID, studentID, applicationID, 
-                          coordinatorID, listingID, postingID)
-VALUES ('Job application', '2024-10-10 15:41:00', 1, 1, 1, NULL, 166661, 1),
-       ('Message', '2024-10-11 15:41:00', 2, 2, NULL, NULL, NULL, NULL),
-       ('Message', '2024-10-11 15:41:01', NULL, 2, NULL, NULL, NULL, NULL);
+-- INSERT INTO Notification (type, dateTimeSent, coachID, studentID, applicationID, 
+--                           coordinatorID, listingID, postingID)
+-- VALUES ('Job application', '2024-10-10 15:41:00', 1, 1, 1, NULL, 166661, 1),
+--        ('Message', '2024-10-11 15:41:00', 2, 2, NULL, NULL, NULL, NULL),
+--        ('Message', '2024-10-11 15:41:01', NULL, 2, NULL, NULL, NULL, NULL);
+
+INSERT INTO Notification
+(type, isRead, dateTimeSent, coachID, studentID, applicationID, coordinatorID, listingID, postingID)
+VALUES
+('Job application', FALSE, '2024-10-10 15:41:00', 1, 1, 1, NULL, 166661, 1),
+('Message',         FALSE, '2024-10-11 15:41:00', 2, 2, NULL, NULL, NULL, NULL),
+('Message',         FALSE, '2024-10-11 15:41:01', NULL, 2, NULL, NULL, NULL, NULL);
+
 
 INSERT INTO Notification 
 (type, isRead, dateTimeSent, coachID, studentID, applicationID, coordinatorID, listingID, postingID)
@@ -1031,7 +1044,6 @@ VALUES
 ('Rejections are data, not judgement.',         '2025-07-20 17:25:00', 1, 1,13),
 ('Can you share the job description for NVIDIA?','2025-07-22 08:40:00',1, 1,14),
 ('I like how you framed your project impact.',  '2025-07-22 08:55:00', 1, 1,14),
-('Let''s refine your answer to "Tell me about yourself."', '2025-07-23 09:15:00', 1, 1,15),
 ('Try practicing with a friend tonight.',       '2025-07-23 09:30:00', 1, 1,15),
 ('Ping me if you get an offer update.',         '2025-07-25 12:45:00', 1, 1,16),
 ('You''re very close to landing something good.', '2025-07-25 12:55:00',1, 1,16), 
@@ -1044,27 +1056,7 @@ VALUES
 ('I can send you a case prep guide.',              '2025-09-10 17:05:00', 2, 1,30),
 ('Nice progress on your cover letter.',            '2025-09-12 18:25:00', 2, 1,31),
 ('Don''t forget to tailor each cover letter.',     '2025-09-12 18:35:00', 2, 1,31),
-('You''re building a really strong profile.',      '2025-09-15 09:40:00', 2, 1,32), 
-('Hi, I noticed you haven''t logged activity recently.', '2025-09-15 09:55:00', 3, 1,33),
-('Can you add your latest applications today?',          '2025-09-17 12:00:00', 3, 1,34),
-('Let''s talk about broadening your search a bit.',      '2025-09-19 13:45:00', 4, 1,35),
-('Try applying to a mix of big and mid-sized firms.',    '2025-09-19 14:00:00', 4, 1,35),
-('I recommend setting weekly goals for applications.',   '2025-09-21 15:15:00', 5, 1,36), 
-('Nice work attending the career fair.',                 '2025-09-23 17:30:00', 5, 1,36),
-('Did you get any recruiter contact info?',             '2025-09-25 09:10:00', 6, 1,37),
-('Please log those conversations in the app.',          '2025-09-25 09:20:00', 6, 1,37),
-('Your interview pipeline looks much better now.',      '2025-09-27 10:50:00', 7, 1,38),
-('We can focus on negotiation skills next.',            '2025-09-27 11:05:00', 7, 1,38), 
-('This looks like a good fit for your skills.',         '2025-10-04 09:45:00', 8, 2, 41),
-('Be sure to research the company culture.',            '2025-10-04 09:55:00', 8, 2, 41),
-('I liked the way you answered the behavioral questions.','2025-10-06 11:25:00',9, 3, 42),
-('Keep practicing the technical portion.',              '2025-10-06 11:35:00', 9, 3, 42),
-('Let''s debrief after your next round.',               '2025-10-08 14:00:00',10, 4, 43), 
-('Thanks for sending your updated resume.',             '2025-10-08 14:10:00',10, 4, 43),
-('I just pushed a new set of recommendations for you.', '2025-10-10 16:40:00',11, 5, 44),
-('Check the dashboard for your latest progress metrics.','2025-10-10 16:55:00',11, 5, 44),
-('You''re making steady progress—keep going!',          '2025-10-12 19:10:00',12, 6, 45),
-('We can revise your strategy if you don''t hear back soon.','2025-10-12 19:20:00',12, 6, 45);
+('You''re building a really strong profile.',      '2025-09-15 09:40:00', 2, 1,32);
 
 
 INSERT INTO Audit (summary, tableName, action, timeStamp, recordID, adminID, studentID, coordinatorID, coachID)
