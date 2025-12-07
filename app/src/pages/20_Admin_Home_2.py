@@ -30,11 +30,16 @@ try:
     if response.status_code == 200:
         alerts = response.json()
         if alerts:
-            critical_alerts = [a for a in alerts if a.get('severity') == 'Critical']
-            if critical_alerts:
-                st.error(f"⚠️ ALERT!! {len(critical_alerts)} critical system issue(s) detected")
-except:
-    pass
+            col_alert, col_btn = st.columns([3, 1])
+            
+            with col_alert:
+                st.error(f" ALERT!! {len(alerts)} system issue(s) detected")
+            
+            with col_btn:
+                if st.button("View Alerts →", type="primary", use_container_width=True):
+                    st.switch_page("pages/31_Alerts_Management.py")
+except Exception as e:
+    st.error(f"Debug error: {str(e)}")
 
 st.divider()
 
@@ -112,7 +117,7 @@ with tab1:
                         value=f"{data.get('measurement_count', 0)}"
                     )
                 
-                st.info(f"📊 Showing data from the {time_range.lower()}")
+                st.info(f" Showing data from the {time_range.lower()}")
             else:
                 st.error(f"Error fetching data: {response.status_code}")
         except Exception as e:
@@ -120,7 +125,7 @@ with tab1:
 
     st.divider()
 
-    st.subheader("📊 Resource Usage Trends")
+    st.subheader(" Resource Usage Trends")
     
     try:
         response = requests.get(f'http://web-api:4000/app_tracker/sysadmin/resource-usage/{days}')
@@ -148,7 +153,6 @@ with tab1:
                 
                 st.divider()
                 
-                # Display data as table (without pandas)
                 st.markdown("#### Daily Breakdown")
                 
                 # Create header
@@ -186,134 +190,133 @@ with tab1:
         st.error(f"Error fetching resource usage: {str(e)}")
 
 with tab2:
-    st.subheader("Data Security Management")
-    
     col1, col2 = st.columns(2)
     
     with col1:
         st.markdown("### Backup Status & Operations")
+        
+        # Fetch latest backup
         try:
             response = requests.get('http://web-api:4000/app_tracker/sysadmin/backups/latest')
             if response.status_code == 200:
                 backup = response.json()
-                st.info(f"**Last Backup:** {backup.get('datePerformed', 'N/A')}")
-                st.info(f"**Status:** {backup.get('status', 'Unknown')}")
-                st.info(f"**Health:** {backup.get('health', 'Unknown')}")
-                if backup.get('size'):
-                    st.info(f"**Size:** {backup.get('size')} GB")
+                
+                st.write(f"**Last Backup:** {backup.get('datePerformed', 'N/A')}")
+                st.write(f"**Backup Health:** {backup.get('health', 'Unknown')}")
+                st.write(f"**Backup Size:** {backup.get('size', 'N/A')} GB" if backup.get('size') else "**Backup Size:** Calculating...")
+                
+                # Get retention policy from config
+                try:
+                    config_response = requests.get('http://web-api:4000/app_tracker/sysadmin/config/current')
+                    if config_response.status_code == 200:
+                        config = config_response.json()
+                        st.write(f"**Retention Policy:** {config.get('daysToBackup', 'N/A')} days")
+                    else:
+                        st.write(f"**Retention Policy:** Not configured")
+                except:
+                    st.write(f"**Retention Policy:** Not configured")
             else:
-                st.warning("No backup history available")
+                st.write("**Last Backup:** No backup history")
+                st.write("**Backup Health:** Unknown")
+                st.write("**Backup Size:** N/A")
+                st.write("**Retention Policy:** N/A")
         except Exception as e:
-            st.warning(f"Could not fetch backup status: {str(e)}")
+            st.write("**Last Backup:** Error loading")
+            st.write("**Backup Health:** Unknown")
+            st.write("**Backup Size:** N/A")
+            st.write("**Retention Policy:** N/A")
         
-        st.divider()
+        st.write("") 
         
-        # Manual backup button
-        if st.button("🔄 Run Manual Backup", use_container_width=True, type="primary"):
+        if st.button("Run Manual Backup", use_container_width=True, type="primary"):
             try:
                 response = requests.post('http://web-api:4000/app_tracker/sysadmin/backup/1')
                 
                 if response.status_code == 201:
                     result = response.json()
-                    st.success(f"✅ {result['message']}")
-                    st.info(f"Backup ID: {result['backupID']}")
+                    st.session_state.success_message = f" Backup initiated! ID: {result['backupID']}"
+                    st.balloons()
+                    st.rerun()
                 else:
                     st.error(f"Backup failed: {response.status_code}")
-                
             except Exception as e:
-                st.error(f"Failed to initiate backup: {str(e)}")
-        
-        st.divider()
-        
-        # Show recent backups
-        st.markdown("#### Recent Backups")
-        try:
-            response = requests.get(f'http://web-api:4000/app_tracker/sysadmin/backups/{days}')
-            if response.status_code == 200:
-                backups = response.json()
-                if backups:
-                    col1, col2, col3, col4 = st.columns([1, 2, 1, 1])
-                    with col1:
-                        st.markdown("**ID**")
-                    with col2:
-                        st.markdown("**Date**")
-                    with col3:
-                        st.markdown("**Status**")
-                    with col4:
-                        st.markdown("**Health**")
-                    
-                    st.divider()
-                    
-                    for backup in backups:
-                        col1, col2, col3, col4 = st.columns([1, 2, 1, 1])
-                        with col1:
-                            st.write(backup.get('backupID', 'N/A'))
-                        with col2:
-                            st.write(backup.get('datePerformed', 'N/A'))
-                        with col3:
-                            st.write(backup.get('status', 'N/A'))
-                        with col4:
-                            health = backup.get('health', 'N/A')
-                            if health == 'Healthy':
-                                st.write(f"✅ {health}")
-                            else:
-                                st.write(f"❌ {health}")
-                else:
-                    st.info("No recent backups")
-            else:
-                st.error(f"Error fetching backups: {response.status_code}")
-        except Exception as e:
-            st.error(f"Error fetching backups: {str(e)}")
+                st.error(f"Error: {str(e)}")
     
     with col2:
-        st.markdown("### 📋 Audit Log")
-        
-        # Hour selector for audit logs
-        hours = st.selectbox("Show logs from last:", [24, 48, 72, 168], 
-                            format_func=lambda x: f"{x} hours ({x//24} days)")
+        st.markdown("### Audit Log (Recent Activity)")
         
         try:
+            hours = 99999 
             response = requests.get(f'http://web-api:4000/app_tracker/sysadmin/audit-logs/{hours}')
             
             if response.status_code == 200:
                 logs = response.json()
                 
                 if logs:
-                    st.write(f"**Total entries:** {len(logs)}")
-                    
-                    # Display header
-                    col1, col2, col3, col4 = st.columns([2, 1, 1, 2])
-                    with col1:
+                    # Create table header
+                    col_t, col_u, col_a = st.columns([2, 2, 2])
+                    with col_t:
                         st.markdown("**Time**")
-                    with col2:
+                    with col_u:
+                        st.markdown("**User**")
+                    with col_a:
                         st.markdown("**Action**")
-                    with col3:
-                        st.markdown("**Table**")
-                    with col4:
-                        st.markdown("**Summary**")
                     
-                    st.divider()
-                    
-                    # Display first 20 logs
-                    for log in logs[:20]:
-                        col1, col2, col3, col4 = st.columns([2, 1, 1, 2])
-                        with col1:
-                            st.write(log.get('timeStamp', 'N/A'))
-                        with col2:
+                    for log in logs[:6]:
+                        col_t, col_u, col_a = st.columns([2, 2, 2])
+                        
+                        with col_t:
+                            timestamp = log.get('timeStamp', 'N/A')
+                            if timestamp != 'N/A':
+                                time_str = str(timestamp)
+                                st.write(time_str)
+                            else:
+                                st.write('N/A')
+                        
+                        with col_u:
+                            if log.get('studentID'):
+                                st.write(f"Student #{log['studentID']}")
+                            elif log.get('coachID'):
+                                st.write(f"Coach #{log['coachID']}")
+                            elif log.get('coordinatorID'):
+                                st.write(f"Coordinator #{log['coordinatorID']}")
+                            elif log.get('adminID'):
+                                st.write(f"Admin #{log['adminID']}")
+                            else:
+                                st.write("Unknown")
+                        
+                        with col_a:
                             st.write(log.get('action', 'N/A'))
-                        with col3:
-                            st.write(log.get('tableName', 'N/A'))
-                        with col4:
-                            st.write(log.get('summary', 'N/A'))
-                    
-                    if len(logs) > 20:
-                        st.info(f"Showing 20 of {len(logs)} entries")
                 else:
-                    st.info("No audit log entries found")
+                    st.info("No recent audit activity")
             else:
-                st.error(f"Error fetching audit logs: {response.status_code}")
-                
+                st.error(f"Error loading audit log")
         except Exception as e:
-            st.error(f"Error fetching audit logs: {str(e)}")
+            st.error(f"Error: {str(e)}")
+    
+    st.divider()
+    
+    st.markdown("### Application Updates & Maintenance")
+    
+    col_left = st.columns(1)[0]
+    
+    with col_left:
+        st.markdown("**Patch Notes**")
+        
+        # Patch notes text area
+        patch_notes = st.text_area(
+            "",
+            value="- Security patch for SQL injection fix\n- Performance improvements\n- Bug fixes for notification system",
+            height=150,
+            label_visibility="collapsed"
+        )
+        
+        st.write("")  
+        
+        # Update buttons
+        col_btn1 = st.columns(1)[0]
 
-st.divider()
+        with col_btn1:
+            if st.button("Schedule Update", use_container_width=True):
+                st.switch_page("pages/21_System_Config.py")
+                st.info("Update scheduled for maintenance window")

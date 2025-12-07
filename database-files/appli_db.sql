@@ -604,8 +604,6 @@ INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID)
 ('Crissie', 'Yurov', 'cyurov12@umn.edu', 'Nursing', '2029-02-10', 41),
 ('Titus', 'Lippi', 'tlippi13@forbes.com', 'Nursing', '2029-10-14', 42);
 
-
--- NO EXTRA DATA NEEDED
 INSERT INTO SystemConfigurations (daysToBackup, dataRetentionTime, backupSchedule, 
                                   alertThresholdCPU, lastModifiedDate, alertThresholdQueryTime,
                                   maintenanceStartDateTime, maintenanceEndDateTIme, adminID)
@@ -672,12 +670,10 @@ VALUES
 ('query frequency', 'queries/min', 5.00, '2025-10-10 12:31:14', 1),
 ('response time', 'ms', 200.00, '2025-10-11 15:41:00', 1);
 
--- NO EXTRA DATA NEEDED
 INSERT INTO Backup (size, status, health, datePerformed, adminID)
 VALUES (100.00, 'Good', 'Healthy', NULL, 1),
        (50.00, 'Bad', 'Unhealthy', NULL, 1);
 
--- NO EXTRA DATA NEEDED
 INSERT INTO SystemUpdate (updateDate, status, updatedVersion, currentVersion, patchNotes, adminID)
 VALUES (NULL, 'Good', NULL, '1.0.0', NULL, 1),
        (NULL, 'BAD', NULL, '0.0.1', NULL, 1);

@@ -171,7 +171,6 @@ def get_audit_logs(hours):
 # Get unresolved critical alerts
 @sys_admin.route("/sysadmin/alerts/unresolved", methods=["GET"])
 def get_unresolved_alerts():
-    """Get all unresolved critical alerts"""
     try:
         cursor = db.get_db().cursor()
         query = """
@@ -183,7 +182,7 @@ def get_unresolved_alerts():
             timeStamp,
             TIMESTAMPDIFF(MINUTE, timeStamp, NOW()) AS mins_ago
         FROM Alert
-        WHERE isResolved = 0
+        WHERE isResolved = 'FALSE'
         ORDER BY
             CASE severity
                 WHEN 'Critical' THEN 1
@@ -198,6 +197,29 @@ def get_unresolved_alerts():
         cursor.close()
         
         return jsonify(rows), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+# Resolve an alert by its ID
+@sys_admin.route("/sysadmin/alerts/<int:alert_id>/resolve", methods=["PUT"])
+def resolve_alert(alert_id):
+    try:
+        cursor = db.get_db().cursor()
+        query = """
+        UPDATE Alert
+        SET isResolved = 1
+        WHERE alertID = %s
+        """
+        cursor.execute(query, (alert_id,))
+        db.get_db().commit()
+        cursor.close()
+        
+        return jsonify({
+            "message": "Alert resolved successfully",
+            "alertID": alert_id
+        }), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -230,9 +252,9 @@ def create_system_config(admin_id):
             data.get('daysToBackup', 30),
             data.get('alertThresholdQueryTime', 0),
             data.get('alertThresholdCPU', 0),
-            data.get('dataRetentionTime'),
-            data.get('maintenanceStartDateTime'),
-            data.get('maintenanceEndDateTime'),
+            data.get('dataRetentionTime', 30),
+            data.get('maintenanceStartDateTime', '2025-01-01 00:00:00'),
+            data.get('maintenanceEndDateTime', '2025-01-01 00:00:00'),
             admin_id
         ))
         db.get_db().commit()
@@ -244,6 +266,41 @@ def create_system_config(admin_id):
             "message": "Configuration created successfully",
             "configID": config_id
         }), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@sys_admin.route("/sysadmin/config/current", methods=["GET"])
+def get_current_config():
+    """Get the most recent system configuration"""
+    try:
+        cursor = db.get_db().cursor()
+        query = """
+        SELECT
+            sc.configID,
+            sc.backupSchedule,
+            sc.daysToBackup,
+            sc.alertThresholdQueryTime,
+            sc.alertThresholdCPU,
+            sc.dataRetentionTime,
+            sc.maintenanceStartDateTime,
+            sc.maintenanceEndDateTIme,
+            sc.lastModifiedDate,
+            CONCAT(sa.fName, ' ', sa.lName) AS modified_by
+        FROM SystemConfigurations sc
+        JOIN SystemAdmin sa ON sc.adminID = sa.adminID
+        ORDER BY sc.lastModifiedDate DESC
+        LIMIT 1
+        """
+        cursor.execute(query)
+        
+        rows = cursor.fetchall()
+        cursor.close()
+        
+        if not rows:
+            return jsonify({"message": "No configuration found"}), 404
+        
+        return jsonify(rows[0]), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
