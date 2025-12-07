@@ -8,7 +8,7 @@ import requests
 st.set_page_config(layout='wide')
 SideBarLinks()
 
-st.title('⚙️ System Configuration')
+st.title('System Configuration')
 
 # Back button
 if st.button("← Back to Dashboard"):
@@ -23,7 +23,7 @@ try:
     if response.status_code == 200:
         current_config = response.json()
         
-        st.info(f"**Current Configuration** | Last Modified: {current_config.get('lastModifiedDate', 'N/A')} by {current_config.get('modified_by', 'Unknown')}")
+        st.info(f"**Current Configuration** | Last Modified: {current_config.get('lastModifiedDate', '2025-01-01 00:00:00')} by {current_config.get('modified_by', 'Unknown')}")
         
         # Display current settings
         col1, col2 = st.columns(2)
@@ -48,7 +48,7 @@ except Exception as e:
     current_config = {}
 
 # Create new configuration form
-st.subheader("📝 Update System Configuration")
+st.subheader("Update System Configuration")
 
 with st.form("config_form"):
     st.markdown("#### Backup Configuration")
@@ -64,16 +64,14 @@ with st.form("config_form"):
         days_to_backup = st.number_input(
             "Backup Retention (days)",
             min_value=1,
-            max_value=365,
-            value=current_config.get('daysToBackup', 30)
+            value=current_config.get('daysToBackup', 1)
         )
     
     with col2:
         data_retention = st.number_input(
             "Data Retention Time (days)",
-            min_value=30,
-            max_value=3650,
-            value=current_config.get('dataRetentionTime', 730),
+            min_value=1,
+            value=current_config.get('dataRetentionTime', 1),
             help="How long to keep old data"
         )
     
@@ -110,7 +108,7 @@ with st.form("config_form"):
         )
     
     # Submit button
-    submitted = st.form_submit_button("💾 Save Configuration", type="primary", use_container_width=True)
+    submitted = st.form_submit_button("Save Configuration", type="primary", use_container_width=True)
     
     if submitted:
         try:
@@ -131,10 +129,8 @@ with st.form("config_form"):
             
             if response.status_code == 201:
                 result = response.json()
-                st.success(f"✅ {result['message']}")
+                st.success(f" {result['message']}")
                 st.info(f"Configuration ID: {result['configID']}")
-                st.balloons()
-                st.rerun()
             else:
                 st.error(f"Failed to save configuration: {response.status_code}")
             

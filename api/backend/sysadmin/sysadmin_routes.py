@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from backend.db_connection import db
 from mysql.connector import Error
+from datetime import datetime
 
 # Create a Blueprint for system administration routes
 sys_admin = Blueprint("sys_admin", __name__)
@@ -58,7 +59,7 @@ def initiate_backup(admin_id):
         )
         VALUES (
             NOW(),
-            '100',
+            100,
             'In Progress',
             'Healthy',
             %s
@@ -182,13 +183,8 @@ def get_unresolved_alerts():
             timeStamp,
             TIMESTAMPDIFF(MINUTE, timeStamp, NOW()) AS mins_ago
         FROM Alert
-        WHERE isResolved = 'FALSE'
+        WHERE isResolved = FALSE
         ORDER BY
-            CASE severity
-                WHEN 'Critical' THEN 1
-                WHEN 'Warning' THEN 2
-                ELSE 3
-            END,
             timeStamp ASC
         """
         cursor.execute(query)
@@ -239,7 +235,7 @@ def create_system_config(admin_id):
             alertThresholdCPU,
             dataRetentionTime,
             maintenanceStartDateTime,
-            maintenanceEndDateTIme,
+            maintenanceEndDateTime,
             lastModifiedDate,
             adminID
         )
@@ -247,8 +243,10 @@ def create_system_config(admin_id):
             %s, %s, %s, %s, %s, %s, %s, NOW(), %s
         )
         """
+
+
         cursor.execute(query, (
-            data.get('backupSchedule'),
+            data.get('backupSchedule', '2025-01-01 00:00:00'),
             data.get('daysToBackup', 30),
             data.get('alertThresholdQueryTime', 0),
             data.get('alertThresholdCPU', 0),
@@ -269,10 +267,11 @@ def create_system_config(admin_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+
+# Get the most recent system configuration    
 @sys_admin.route("/sysadmin/config/current", methods=["GET"])
 def get_current_config():
-    """Get the most recent system configuration"""
     try:
         cursor = db.get_db().cursor()
         query = """
@@ -284,7 +283,7 @@ def get_current_config():
             sc.alertThresholdCPU,
             sc.dataRetentionTime,
             sc.maintenanceStartDateTime,
-            sc.maintenanceEndDateTIme,
+            sc.maintenanceEndDateTime,
             sc.lastModifiedDate,
             CONCAT(sa.fName, ' ', sa.lName) AS modified_by
         FROM SystemConfigurations sc
@@ -300,7 +299,14 @@ def get_current_config():
         if not rows:
             return jsonify({"message": "No configuration found"}), 404
         
-        return jsonify(rows[0]), 200
+        config = rows[0]
+        config['backupSchedule'] = config['backupSchedule'].strftime('%Y-%m-%d %H:%M:%S')
+        config['maintenanceStartDateTime'] = config['maintenanceStartDateTime'].strftime('%Y-%m-%d %H:%M:%S')
+        config['maintenanceEndDateTime'] = config['maintenanceEndDateTime'].strftime('%Y-%m-%d %H:%M:%S')
+        config['lastModifiedDate'] = config['lastModifiedDate'].strftime('%Y-%m-%d')
+
+
+        return jsonify(config), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

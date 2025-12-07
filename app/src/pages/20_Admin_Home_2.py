@@ -234,9 +234,7 @@ with tab2:
                 
                 if response.status_code == 201:
                     result = response.json()
-                    st.session_state.success_message = f" Backup initiated! ID: {result['backupID']}"
-                    st.balloons()
-                    st.rerun()
+                    st.success(f" {result.get('message', '')}! Backup ID: {result.get('backupID', 'N/A')}")
                 else:
                     st.error(f"Backup failed: {response.status_code}")
             except Exception as e:
@@ -306,9 +304,9 @@ with tab2:
         # Patch notes text area
         patch_notes = st.text_area(
             "",
-            value="- Security patch for SQL injection fix\n- Performance improvements\n- Bug fixes for notification system",
-            height=150,
-            label_visibility="collapsed"
+            value = "- Security patch for SQL injection fix\n- Performance improvements\n- Bug fixes for notification system",
+            height = 150,
+            label_visibility = "collapsed"
         )
         
         st.write("")  

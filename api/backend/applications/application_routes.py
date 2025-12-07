@@ -11,7 +11,8 @@ def get_student_applications(student_id):
     try:
         cursor = db.get_db().cursor()
         query = """
-        SELECT 
+        SELECT
+            ja.applicationID,
             ja.dateApplied AS Date_Applied,
             ja.companyName AS Company, 
             ja.position AS Position,
@@ -132,6 +133,82 @@ def add_application(student_id):
         cursor.close()
 
         return jsonify({"message": "Application linked and added!", "appID": new_app_id}), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Update a job application for a specific student
+@applications.route("/applications/<int:student_id>", methods=["PUT"])
+def update_application(student_id):
+    try:
+        data = request.get_json()
+        
+        app_id = data.get('application_id')
+        
+        company = data.get('company')
+        position = data.get('position')
+        stage = data.get('stage')
+        date_applied = data.get('date_applied')
+        resume_id = data.get('resume_id')
+        job_board = data.get('job_board')
+        
+        last_updated = datetime.now()
+        
+        if not app_id:
+            return jsonify({"error": "Missing application ID"}), 400
+
+        cursor = db.get_db().cursor()
+        
+        query = """
+        UPDATE JobApplication
+        SET 
+            companyName = %s,
+            position = %s,
+            stage = %s,
+            dateApplied = %s,
+            resumeID = %s,
+            jobBoard = %s,
+            lastUpdated = %s
+        WHERE applicationID = %s AND studentID = %s
+        """
+        
+        cursor.execute(query, (
+            company, 
+            position, 
+            stage, 
+            date_applied, 
+            resume_id, 
+            job_board, 
+            last_updated,
+            app_id, 
+            student_id
+        ))
+        
+        db.get_db().commit()
+        cursor.close()
+
+        return jsonify({"message": "Application updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@applications.route("/applications/<int:student_id>/<int:application_id>", methods=["DELETE"])
+def delete_application(student_id, application_id):
+    try:
+        cursor = db.get_db().cursor()
+        
+        query = """
+        DELETE FROM JobApplication
+        WHERE applicationID = %s AND studentID = %s
+        """
+        
+        cursor.execute(query, (application_id, student_id))
+        
+        db.get_db().commit()
+        cursor.close()
+
+        return jsonify({"message": "Application deleted successfully"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
