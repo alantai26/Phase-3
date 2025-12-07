@@ -883,7 +883,7 @@ VALUES
 ('Google',       'Backend Developer Intern',      'Interviewing', '2024-02-02', '2024-02-10 14:30:00', 'Handshake',    1, 200001,  2, 199991),
 ('Microsoft',    'Cloud Engineer Intern',         'Rejected',     '2024-02-20', '2024-03-01 09:05:00', 'LinkedIn',     1, 200002,  3, 199991),
 ('Meta',         'Full Stack Engineer Intern',    'Applied',      '2024-03-05', '2024-03-07 11:45:00', 'NUworks',      1, 200003,  4, 199991),
-('Netflix',      'Data Engineer Intern',          'Ghosted',      '2024-03-18', '2024-04-01 16:20:00', 'Indeed',       1, 200004,  5, 199991),
+('Netflix',      'Data Engineer Intern',          'Offered',      '2024-03-18', '2024-04-01 16:20:00', 'Indeed',       1, 200004,  5, 199991),
 ('Stripe',       'Payments Engineer Co-op',       'Interviewing', '2024-04-02', '2024-04-12 13:10:00', 'LinkedIn',     1, 200005,  6, 199991),
 ('HubSpot',      'Software Engineer Co-op',       'Applied',      '2024-04-15', '2024-04-17 15:00:00', 'NUworks',      1, 200006,  7, 199991),
 ('Wayfair',      'Platform Engineer Intern',      'Rejected',     '2024-04-29', '2024-05-10 10:40:00', 'Handshake',    1, 200007,  8, 199991),

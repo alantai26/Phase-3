@@ -13,6 +13,49 @@ from backend.db_connection import db
 # Create a Blueprint for career_coach
 career_coach = Blueprint("career_coach", __name__)
 
+# Get notifications for a coach
+@career_coach.route("/career_coach/<int:coach_id>/notifications", methods=["GET"])
+def get_notifications(coach_id):
+    try:
+        cursor = db.get_db().cursor()
+        cursor.execute("""
+            SELECT notificationID, type, isRead, studentID
+            FROM Notification
+            WHERE coachID = %s
+            ORDER BY dateTimeSent DESC
+        """, (coach_id,))
+        notifications = cursor.fetchall()
+        cursor.close()
+        return jsonify(notifications), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Toggle notifications read/unread
+@career_coach.route("/career_coach/<int:coach_id>/notifications/toggle", methods=["PUT"])
+def toggle_notifications(coach_id):
+    data = request.get_json()
+    ids = data.get("notification_ids", [])
+    mark_read = data.get("mark_read", True)  # True = mark as read, False = mark as unread
+
+    if not ids:
+        return jsonify({"error": "No notification IDs provided"}), 400
+
+    try:
+        placeholders = ",".join(["%s"] * len(ids))
+        cursor = db.get_db().cursor()
+        cursor.execute(
+            f"UPDATE Notification SET isRead = %s WHERE coachID = %s AND notificationID IN ({placeholders})",
+            [mark_read, coach_id] + ids
+        )
+        db.get_db().commit()
+        cursor.close()
+        action = "read" if mark_read else "unread"
+        return jsonify({"message": f"{len(ids)} notifications marked as {action}. "
+                        + "Click again to confirm"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 # Add student to coach
 @career_coach.route("/career_coach/<int:coach_id>/add_student", methods=["POST"])
 def add_student(coach_id):
