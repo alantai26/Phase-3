@@ -244,7 +244,7 @@ CREATE TABLE StudentProgressMetrics
     numJobApplied INT NOT NULL DEFAULT 0,
     progressID INT NOT NULL,
     studentID INT NOT NULL,
-    PRIMARY KEY (progressID, studentID) AUTO_INCREMENT,
+    PRIMARY KEY (progressID, studentID),
     CONSTRAINT fk_16 FOREIGN KEY (studentID)
         REFERENCES Student (studentID)
         ON DELETE CASCADE
@@ -263,7 +263,7 @@ CREATE TABLE JobListing
     postingURL VARCHAR(50) NOT NULL,
     listingID INT NOT NULL,
     postingID INT NOT NULL,
-    PRIMARY KEY (listingID, postingID) AUTO_INCREMENT,
+    PRIMARY KEY (listingID, postingID),
     platformID INT NOT NULL,
     CONSTRAINT fk_17 FOREIGN KEY (platformID)
         REFERENCES Platform (platformID)
@@ -299,7 +299,7 @@ CREATE TABLE ReportItem
     keyFindings VARCHAR(50) NOT NULL,
     itemID INT NOT NULL,
     reportID INT NOT NULL,
-    PRIMARY KEY (itemID, reportID) AUTO_INCREMENT,
+    PRIMARY KEY (itemID, reportID),
     studentID INT NOT NULL,
     CONSTRAINT fk_20 FOREIGN KEY (reportID)
         REFERENCES Report (reportID)
@@ -319,7 +319,7 @@ CREATE TABLE coachSPM
     coachID INT NOT NULL,
     progressID INT NOT NULL,
     studentID INT NOT NULL,
-    PRIMARY KEY (coachID, progressID, studentID) AUTO_INCREMENT,
+    PRIMARY KEY (coachID, progressID, studentID),
     CONSTRAINT fk_22 FOREIGN KEY (coachID)
         REFERENCES CareerCoach (coachID)
         ON DELETE CASCADE
@@ -339,7 +339,7 @@ CREATE TABLE Resume
     label VARCHAR(50) NOT NULL,
     resumeID INT NOT NULL AUTO_INCREMENT,
     studentID INT NOT NULL,
-    PRIMARY KEY (resumeID) AUTO_INCREMENT,
+    PRIMARY KEY (resumeID, studentID),
     CONSTRAINT fk_24 FOREIGN KEY (studentID)
         REFERENCES Student (studentID)
         ON DELETE CASCADE
@@ -437,138 +437,132 @@ CREATE TABLE Message
     INDEX indexMessageID (messageID)
 );
 
-INSERT INTO SystemAdmin (fName, lName, email, adminID)
-VALUES ('John', 'Joe', 'johnjoe@gmail.com', 000001);
+INSERT INTO SystemAdmin (fName, lName, email)
+VALUES ('John', 'Joe', 'johnjoe@gmail.com');
 
-INSERT INTO SystemConfigurations (daysToBackup, dataRetentionTime,
-                                  backupSchedule, alertThresholdCPU,
-                                  lastModifiedDate, alertThresholdQueryTime,
-                                  maintenanceStartDateTime, maintenanceEndDateTIme,
-                                  configID, adminID)
-VALUES (20, NULL, '2025-07-10 15:41:00',
-        FALSE, NULL, FALSE,
-        NULL, NULL,
-        111111, 000001),
-       (30, NULL, '2026-07-10 15:41:00',
-        TRUE,NULL, FALSE,
-        NULL, NULL,
-        111112, 000001);
+INSERT INTO CareerCoach (firstName, lastName, email)
+VALUES ('Marcus', 'Smith', 'marcussmith@gmail.com'),
+       ('Joe', 'Johnson', 'joeJohnson@gmail.com');
 
-INSERT INTO ResourceUsage (timeStamp, activeUsers, numApplications,
-                           dbSize, cpuUsagePct, usageID, adminID)
-VALUES ('2025-10-10 15:41:00', 1, 2,
-        '100 GB', 0.67, 222221, 000001),
-       ('2025-10-10 15:41:00', 0, 0,
-        '1 GB', 0.50, 222222, 000001);
+INSERT INTO HiringCoordinator (fName, lName, email, companyName)
+VALUES ('Sophia', 'Soap', 'sophiasoap@gmail.com', 'Amazon'),
+       ('Dirt', 'Dog', 'dirtdog@gmail.com', 'Chewy');
 
-INSERT INTO PerformanceMetric (type, unit, measurement, timeStamp, metricID, adminID)
-VALUES ('response time', 'ms', 100.00,
-        '2025-10-10 15:41:00', 333331, 000001),
-       ('query frequency', 'queries/min', 5.00,
-        '2025-10-10 12:31:14', 333332, 000001),
-       ('response time', 'ms', 200.00,
-        '2025-10-11 15:41:00', 333333, 000001);
+INSERT INTO Platform (name, platformType, baseURL)
+VALUES ('LinkedIn', 'Online', 'https://www.linkedin.com/'),
+       ('NUworks', 'Online', 'https://northeastern-csm.symplicity.com/students/');
+
+INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID)
+VALUES ('James', 'Jane', 'jamesjane@gmail.com', 'Computer Science', NULL, 1),
+       ('Alice', 'Bob', 'alicebob@gmail.com', 'Math', NULL, 2);
+
+INSERT INTO SystemConfigurations (daysToBackup, dataRetentionTime, backupSchedule, 
+                                  alertThresholdCPU, lastModifiedDate, alertThresholdQueryTime,
+                                  maintenanceStartDateTime, maintenanceEndDateTIme, adminID)
+VALUES (20, NULL, '2025-07-10 15:41:00', FALSE, NULL, FALSE, NULL, NULL, 1),
+       (30, NULL, '2026-07-10 15:41:00', TRUE, NULL, FALSE, NULL, NULL, 1);
+
+INSERT INTO ResourceUsage (timeStamp, activeUsers, numApplications, dbSize, cpuUsagePct, adminID)
+VALUES ('2025-10-10 15:41:00', 1, 2, '100 GB', 0.67, 1),
+       ('2025-10-10 15:41:00', 0, 0, '1 GB', 0.50, 1);
+
+INSERT INTO PerformanceMetric (type, unit, measurement, timeStamp, adminID)
+VALUES 
+('response time', 'ms', 125.5, NOW() - INTERVAL 1 HOUR, 1),
+('response time', 'ms', 130.2, NOW() - INTERVAL 3 HOUR, 1),
+('response time', 'ms', 118.9, NOW() - INTERVAL 6 HOUR, 1),
+('response time', 'ms', 145.3, NOW() - INTERVAL 9 HOUR, 1),
+('response time', 'ms', 135.7, NOW() - INTERVAL 12 HOUR, 1),
+('response time', 'ms', 122.4, NOW() - INTERVAL 18 HOUR, 1),
+('response time', 'ms', 140.8, NOW() - INTERVAL 22 HOUR, 1),
+
+('query frequency', 'queries/min', 450, NOW() - INTERVAL 2 HOUR, 1),
+('query frequency', 'queries/min', 520, NOW() - INTERVAL 4 HOUR, 1),
+('query frequency', 'queries/min', 380, NOW() - INTERVAL 8 HOUR, 1),
+('query frequency', 'queries/min', 600, NOW() - INTERVAL 10 HOUR, 1),
+('query frequency', 'queries/min', 475, NOW() - INTERVAL 14 HOUR, 1),
+('query frequency', 'queries/min', 510, NOW() - INTERVAL 20 HOUR, 1),
+
+('cpu', 'percent', 65.0, NOW() - INTERVAL 1 HOUR, 1),
+('cpu', 'percent', 78.5, NOW() - INTERVAL 5 HOUR, 1),
+('cpu', 'percent', 82.3, NOW() - INTERVAL 7 HOUR, 1),
+('cpu', 'percent', 70.1, NOW() - INTERVAL 11 HOUR, 1),
+('cpu', 'percent', 68.9, NOW() - INTERVAL 15 HOUR, 1),
+('cpu', 'percent', 75.6, NOW() - INTERVAL 19 HOUR, 1),
+
+('latency', 'ms', 45.2, NOW() - INTERVAL 2 HOUR, 1),
+('latency', 'ms', 52.8, NOW() - INTERVAL 6 HOUR, 1),
+('latency', 'ms', 38.5, NOW() - INTERVAL 10 HOUR, 1),
+('latency', 'ms', 48.9, NOW() - INTERVAL 13 HOUR, 1),
+('latency', 'ms', 55.3, NOW() - INTERVAL 17 HOUR, 1),
+('latency', 'ms', 42.1, NOW() - INTERVAL 21 HOUR, 1),
+
+('response time', 'ms', 100.00, '2025-10-10 15:41:00', 1),
+('query frequency', 'queries/min', 5.00, '2025-10-10 12:31:14', 1),
+('response time', 'ms', 200.00, '2025-10-11 15:41:00', 1);
 
 INSERT INTO Backup (size, status, health, datePerformed, adminID)
-VALUES (100.00, 'Good', 'Healthy', NULL,
-        000001),
-       (50.00, 'Bad', 'Unhealthy', Null,
-        000001);
-INSERT INTO SystemUpdate (updateDate, status, updatedVersion, currentVersion, patchNotes, updateID, adminID)
-VALUES (NULL, 'Good', NULL, '1.0.0',
-        NULL, 555551, 000001),
-       (NULL, 'BAD', NULL, '0.0.1',
-        NULL, 555552, 000001);
+VALUES (100.00, 'Good', 'Healthy', NULL, 1),
+       (50.00, 'Bad', 'Unhealthy', NULL, 1);
 
-INSERT INTO Alert (type, severity, message, isResolved, timeStamp, alertID, adminID, usageID, backupID, metricID, updateID)
-VALUES ('Backup', 'Low', NULL, TRUE, '2025-10-10 15:21:31',
-        666661, 000001, NULL, 444441, NULL, NULL),
-       ('SystemUpdate', 'Low', NULL, TRUE, '2025-10-10 15:22:31',
-        666662, 000001, NULL, NULL, NULL, 555551);
 
-INSERT INTO CareerCoach (firstName, lastName, email, coachID)
-VALUES ('Marcus', 'Smith', 'marcussmith@gmail.com', 777771),
-       ('Joe', 'Johnson', 'joeJohnson@gmail.com', 777772);
+INSERT INTO SystemUpdate (updateDate, status, updatedVersion, currentVersion, patchNotes, adminID)
+VALUES (NULL, 'Good', NULL, '1.0.0', NULL, 1),
+       (NULL, 'BAD', NULL, '0.0.1', NULL, 1);
 
-INSERT INTO Student (firstName, lastName, email, major, graduationDate, studentID, coachID)
-VALUES ('James', 'Jane', 'jamesjane@gmail.com', 'Computer Science',
-        NULL, 888881, 777771),
-       ('Alice', 'Bob', 'alicebob@gmail.com', 'Math',
-        NULL, 888882, 777772);
+INSERT INTO Alert (type, severity, message, isResolved, timeStamp, adminID, usageID, backupID, metricID, updateID)
+VALUES ('Backup', 'Low', NULL, TRUE, '2025-10-10 15:21:31', 1, NULL, 1, NULL, NULL),
+       ('SystemUpdate', 'Low', NULL, TRUE, '2025-10-10 15:22:31', 1, NULL, NULL, NULL, 1);
 
-INSERT INTO HiringCoordinator (fName, lName, email, companyName, coordinatorID)
-VALUES ('Sophia', 'Soap', 'sophiasoap@gmail.com', 'Amazon', 999991),
-       ('Dirt', 'Dog', 'dirtdog@gmail.com', 'Chewy', 999992);
+INSERT INTO JobPosting (title, roleType, location, department, datePosted, dateClosed, coordinatorID)
+VALUES ('Mcdonald flipper', 'Burger Flipper', 'Boston', 'Kitchen', '2025-07-10', NULL, 1),
+       ('SWE', 'SWE', 'Seattle', 'AWS', '2020-06-11', NULL, 2);
 
-INSERT INTO Audit (summary, tableName, action, timeStamp, recordID, auditID, adminID, studentID, coordinatorID, coachID)
-VALUES ('Good', 'Student', 'Applied Job',
-        '2025-10-10 15:41:31', 0, 122221, 000001,
-        888881, NULL, NULL),
-       ('Good activity', 'Coach', 'Helping Student',
-        '2025-10-10 16:31:41', 1, 122222, 000001, NULL, NULL, 777771);
+INSERT INTO StudentProgressMetrics (progressID, studentID, lastActivityDate, offersReceived, interviewsScheduled, numJobApplied)
+VALUES (155551, 1, '2024-06-10', 0, 0, 0),
+       (155552, 2, '2025-06-10', 1, 1, 1);
 
-INSERT INTO JobPosting (title, roleType, location, department, datePosted, dateClosed, postingID, coordinatorID)
-VALUES ('Mcdonald flipper', 'Burger Flipper', 'Boston', 'Kitchen',
-        '2025-07-10', NULL, 133331, 999991),
-       ('SWE', 'SWE', 'Seattle', 'AWS',
-        '2020-06-11', NULL, 133332, 999992);
+INSERT INTO JobListing (listingID, postingID, listingStatus, datePublished, expiresOn, 
+                        lastChecked, postingURL, platformID)
+VALUES (166661, 1, 'Up', '2024-06-10', NULL, NULL, 'https://www.linkedin.com/jobs/123', 1),
+       (166662, 2, 'Down', '2024-06-10', '2024-06-10', NULL, 
+        'https://northeastern.com/students/jobs/321', 2);
 
-INSERT INTO Platform (name, platformType, baseURL, platformID)
-VALUES ('LinkedIn', 'Online', 'https://www.linkedin.com/', 144441),
-       ('NUworks', 'Online', 'https://northeastern-csm.symplicity.com/students/', 144442);
+INSERT INTO Report (generatedDate, summary, coachID)
+VALUES ('2024-06-10', 'I did not listen', 1),
+       ('2025-06-10', 'Good guy', 2);
 
-INSERT INTO StudentProgressMetrics (lastActivityDate, offersReceived, interviewsScheduled, numJobApplied, progressID, studentID)
-VALUES ('2024-06-10', 0, 0, 0, 155551, 888881),
-       ('2025-06-10', 1, 1, 1, 155552, 888882);
-
-INSERT INTO JobListing (listingStatus, datePublished, expiresOn, lastChecked, postingURL, listingID, postingID, platformID)
-VALUES ('Up', '2024-06-10', NULL, NULL, 'https://www.linkedin.com/jobs/123',
-        166661, 133331, 144441),
-       ('Down', '2024-06-10', '2024-06-10', NULL,
-        'https://northeastern.com/students/jobs/321', 166662, 133332, 144442);
-
-INSERT INTO Report (generatedDate, summary, reportID, coachID)
-VALUES ('2024-06-10', 'I did not listen', 177771, 777771),
-       ('2025-06-10', 'Good guy', 177772, 777772);
-
-INSERT INTO ReportItem (recommendations, notes, keyFindings, itemID, reportID, studentID)
-VALUES ('idk', 'none', 'none', 188881, 177771, 888881),
-       ('Apply to more', 'applied to little', 'needs to apply to more',
-        188882, 177772, 888882);
+INSERT INTO ReportItem (itemID, reportID, studentID, recommendations, notes, keyFindings)
+VALUES (188881, 1, 1, 'idk', 'none', 'none'),
+       (188882, 2, 2, 'Apply to more', 'applied to little', 'needs to apply to more');
 
 INSERT INTO coachSPM (coachID, progressID, studentID)
-VALUES (777771, 155551, 888881),
-       (777772, 155552, 888882);
+VALUES (1, 155551, 1),
+       (2, 155552, 2);
 
-INSERT INTO Resume (imageURl, label, resumeID, studentID)
-VALUES ('imageurl.com', 'Final Resume', 199991, 888881),
-       ('word.com', 'Updated Resume', 199992, 888882),
-       ('/docs/resumes/student_888881.pdf', 'Software Engineer Focused', 199992, 888881);
+INSERT INTO Resume (resumeID, studentID, imageURl, label)
+VALUES (199991, 1, 'imageurl.com', 'Final Resume'),
+       (199992, 2, 'word.com', 'Updated Resume'),
+       (199993, 1, '/docs/resumes/student_888881.pdf', 'Software Engineer Focused');
 
-INSERT INTO JobApplication (companyName, position, stage, dateApplied,
-                            lastUpdated, applicationID, studentID,
-                            listingID, postingID, resumeID)
-VALUES ('Mcdonald\'s', 'burger flipper', 'applied',
-        '2024-10-10', '2024-10-10', 211111,
-        888881, 166661, 133331, 199991),
-       ('Amazon', 'SWE', 'Rejected',
-        '2024-10-11', '2024-10-11', 211112,
-        888882, 166662, 133332, 199992);
+INSERT INTO JobApplication (companyName, position, stage, dateApplied, lastUpdated, 
+                            studentID, listingID, postingID, resumeID)
+VALUES ('McDonald''s', 'burger flipper', 'applied', '2024-10-10', '2024-10-10', 
+        1, 166661, 1, 199991),
+       ('Amazon', 'SWE', 'Rejected', '2024-10-11', '2024-10-11', 
+        2, 166662, 2, 199992);
 
-INSERT INTO Notification (type, dateTimeSent, notificationID,
-                          coachID, studentID, applicationID,
+INSERT INTO Notification (type, dateTimeSent, coachID, studentID, applicationID, 
                           coordinatorID, listingID, postingID)
-VALUES ('Job application', '2024-10-10 15:41:00', 233331,
-        777771, 888881, 211111, NULL, 166661,
-        133331),
-       ('Message', '2024-10-11 15:41:00', 233332,
-        777772, 888882, NULL, NULL, NULL,
-        NULL),
-       ('Message', '2024-10-11 15:41:01', 233333, NULL,
-        888882, NULL, NULL, NULL, NULL);
+VALUES ('Job application', '2024-10-10 15:41:00', 1, 1, 1, NULL, 166661, 1),
+       ('Message', '2024-10-11 15:41:00', 2, 2, NULL, NULL, NULL, NULL),
+       ('Message', '2024-10-11 15:41:01', NULL, 2, NULL, NULL, NULL, NULL);
 
-INSERT INTO Message (content, dateTimeSent, messageID, studentID, coachID, notificationID)
-VALUES ('coach is right', '2024-10-11 15:41:00', 244441, 888882,
-        777772, 233332),
-       ('hello', '2024-10-11 15:41:01', 244442, 888882,
-        777772, 233333);
+INSERT INTO Message (content, dateTimeSent, studentID, coachID, notificationID)
+VALUES ('coach is right', '2024-10-11 15:41:00', 2, 2, 2),
+       ('hello', '2024-10-11 15:41:01', 2, 2, 3);
+
+INSERT INTO Audit (summary, tableName, action, timeStamp, recordID, adminID, studentID, coordinatorID, coachID)
+VALUES ('Good', 'Student', 'Applied Job', '2025-10-10 15:41:31', 0, 1, 1, NULL, NULL),
+       ('Good activity', 'Coach', 'Helping Student', '2025-10-10 16:31:41', 1, 1, NULL, NULL, 1);
+

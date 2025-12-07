@@ -14,7 +14,7 @@ SideBarLinks()
 if 'first_name' not in st.session_state:
     st.session_state['first_name'] = 'James'
 if 'student_id' not in st.session_state:
-    st.session_state['student_id'] = 888881 
+    st.session_state['student_id'] = 1 
 
 
 @st.dialog("Add New Job Application")
