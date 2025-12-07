@@ -606,7 +606,7 @@ INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID)
 
 INSERT INTO SystemConfigurations (daysToBackup, dataRetentionTime, backupSchedule, 
                                   alertThresholdCPU, lastModifiedDate, alertThresholdQueryTime,
-                                  maintenanceStartDateTime, maintenanceEndDateTIme, adminID)
+                                  maintenanceStartDateTime, maintenanceEndDateTime, adminID)
 VALUES (20, NULL, '2025-07-10 15:41:00', FALSE, NULL, FALSE, NULL, NULL, 1),
        (30, NULL, '2026-07-10 15:41:00', TRUE, NULL, FALSE, NULL, NULL, 1);
 
