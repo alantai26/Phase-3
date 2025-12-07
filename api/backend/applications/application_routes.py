@@ -41,64 +41,97 @@ def add_application(student_id):
     try:
         data = request.get_json()
         
-        company_name = data.get('company')
+        company = data.get('company')
         position = data.get('position')
         stage = data.get('stage')
         date_applied = data.get('date_applied')
         resume_id = data.get('resume_id')
-        job_board = data.get('job_board')
+        job_board_name = data.get('job_board')
         
-        last_updated = datetime.now() 
-        
-        listing_id = None  
-        posting_id = None  
-
-        if not company_name or not position or not stage or not resume_id:
-            return jsonify({"error": "Missing required fields"}), 400
+        if not company or not position or not stage:
+             return jsonify({"error": "Missing required fields"}), 400
 
         cursor = db.get_db().cursor()
 
+        cursor.execute("SELECT platformID FROM Platform WHERE name = %s", (job_board_name,))
+        row = cursor.fetchone()
+        
+        if row:
+            platform_id = row['platformID']
+        else:
+            cursor.execute("INSERT INTO Platform (name, platformType, baseURL) VALUES (%s, 'Manual', '#')", (job_board_name,))
+            platform_id = cursor.lastrowid
+
+        cursor.execute("SELECT coordinatorID FROM HiringCoordinator WHERE companyName = %s", (company,))
+        row = cursor.fetchone()
+        
+        if row:
+            coordinator_id = row['coordinatorID']
+        else:
+            dummy_email = f"hiring@{company.replace(' ', '').lower()}.com"
+            cursor.execute("""
+                INSERT INTO HiringCoordinator (fName, lName, email, companyName)
+                VALUES ('Manual', 'Entry', %s, %s)
+            """, (dummy_email, company))
+            coordinator_id = cursor.lastrowid
+
+        cursor.execute("""
+            SELECT postingID FROM JobPosting 
+            WHERE title = %s AND coordinatorID = %s
+        """, (position, coordinator_id))
+        row = cursor.fetchone()
+        
+        if row:
+            posting_id = row['postingID']
+        else:
+            # Create new Posting
+            cursor.execute("""
+                INSERT INTO JobPosting (title, roleType, location, department, datePosted, coordinatorID)
+                VALUES (%s, %s, 'Unknown', 'Unknown', %s, %s)
+            """, (position, position, date_applied, coordinator_id))
+            posting_id = cursor.lastrowid
+
+        cursor.execute("""
+            SELECT listingID FROM JobListing 
+            WHERE postingID = %s AND platformID = %s
+        """, (posting_id, platform_id))
+        row = cursor.fetchone()
+        
+        if row:
+            listing_id = row['listingID']
+        else:
+            cursor.execute("SELECT MAX(listingID) as max_l FROM JobListing")
+            res = cursor.fetchone()
+            new_listing_id = (res['max_l'] + 1) if (res and res['max_l']) else 100000
+            
+            cursor.execute("""
+                INSERT INTO JobListing (listingID, postingID, platformID, listingStatus, datePublished, postingURL)
+                VALUES (%s, %s, %s, 'Active', %s, '#')
+            """, (new_listing_id, posting_id, platform_id, date_applied))
+            listing_id = new_listing_id
+
         cursor.execute("SELECT MAX(applicationID) AS max_id FROM JobApplication")
         row = cursor.fetchone()
-        current_max = row['max_id'] if (row and row['max_id']) else 0
-        new_app_id = current_max + 1
-
+        new_app_id = (row['max_id'] if row and row['max_id'] else 0) + 1
+        
         query = """
         INSERT INTO JobApplication 
         (
-            applicationID, 
-            studentID, 
-            companyName, 
-            position, 
-            stage,
-            jobBoard,
-            dateApplied, 
-            lastUpdated, 
-            resumeID, 
-            listingID, 
-            postingID
+            applicationID, studentID, companyName, position, stage, jobBoard,
+            dateApplied, lastUpdated, resumeID, listingID, postingID
         )
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         
         cursor.execute(query, (
-            new_app_id, 
-            student_id, 
-            company_name,
-            position, 
-            stage, 
-            job_board,
-            date_applied, 
-            last_updated, 
-            resume_id, 
-            listing_id, 
-            posting_id
+            new_app_id, student_id, company, position, stage, job_board_name,
+            date_applied, datetime.now(), resume_id, listing_id, posting_id
         ))
         
         db.get_db().commit()
         cursor.close()
 
-        return jsonify({"message": "Application added successfully", "appID": new_app_id}), 201
+        return jsonify({"message": "Application linked and added!", "appID": new_app_id}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
