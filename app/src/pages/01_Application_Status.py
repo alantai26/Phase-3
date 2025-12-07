@@ -113,7 +113,7 @@ with col_user:
 
 col_sort, col_empty = st.columns([1, 4])
 with col_sort:
-    st.selectbox("Sort By", ["Date Added", "Company", "Status"])
+    sort_option = st.selectbox("Sort By", ["Date Added", "Company", "Status"])
 
 try:
     api_url = f"http://web-api:4000/app_tracker/applications/{st.session_state['student_id']}?t={time.time()}"
@@ -134,6 +134,13 @@ except Exception as e:
 if not df.empty:
     if 'Date_Applied' in df.columns:
         df['Date_Applied'] = pd.to_datetime(df['Date_Applied']).dt.date
+
+    if sort_option == "Date Added":
+        df = df.sort_values(by="Date_Applied", ascending=False)
+    elif sort_option == "Company":
+        df = df.sort_values(by="Company", ascending=True)
+    elif sort_option == "Status":
+        df = df.sort_values(by="Status", ascending=True)
 
     if 'Status' in df.columns:
         df['Status_Normalized'] = df['Status'].str.lower()
