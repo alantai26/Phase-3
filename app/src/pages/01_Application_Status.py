@@ -88,7 +88,6 @@ def save_changes():
                     if response.status_code == 200:
                         st.toast(f"Deleted application for {original_row['Company']}", icon="🗑️")
                         time.sleep(0.5)
-                        st.rerun()
                     else:
                         st.error(f"Delete failed: {response.text}")
                 except Exception as e:
