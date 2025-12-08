@@ -98,7 +98,7 @@ def create_job_posting(coordinator_id):
             data['roleType'],
             data['location'],
             data['department'],
-            data.get('status', 'Open'),
+            data.get('status', 'Active'),
             coordinator_id
         ))
         db.get_db().commit()

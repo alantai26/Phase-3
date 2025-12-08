@@ -73,9 +73,6 @@ def get_postings_with_platforms(coordinator_id):
 
     return merged_df
 
-
-
-
 # ============
 # Top Row: Expiring Listing + Add Posting Button
 # ============
@@ -104,7 +101,7 @@ status1, platforms1, sort1 = st.columns(3)
 with status1:
     status = st.selectbox(
       "Status", 
-      options=["All", "Active", "Expired", "Paused", "Up", "Down"],
+      options=["All", "Active", "Inactive", "Expired", "Paused", "Up", "Down"],
       index=0)
     
 with platforms1:
