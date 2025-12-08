@@ -307,30 +307,3 @@ def get_coach_students(coach_id):
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-
-@career_coach.route("/career_coach/all", methods=["GET"])
-def get_all_coaches():
-    try:
-        cursor = db.get_db().cursor()
-
-        # Query to get all coaches with their details
-        cursor.execute("""
-        SELECT 
-            coachID, firstName, lastName, email
-        FROM CareerCoach
-        """)
-
-        coaches = cursor.fetchall()
-        cursor.close()
-
-        # Check if coaches are found
-        if coaches:
-            # Return the list of coaches as JSON
-            return jsonify(coaches), 200
-        else:
-            return jsonify({"message": "No coaches found."}), 404
-
-    except Exception as e:
-        # Return an error message if the query fails
-        return jsonify({"error": str(e)}), 500
