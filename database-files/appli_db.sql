@@ -401,7 +401,7 @@ CREATE TABLE Notification
         ON UPDATE CASCADE,
     CONSTRAINT fk_33 FOREIGN KEY (applicationID)
         REFERENCES JobApplication (applicationID)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
     CONSTRAINT fk_34 FOREIGN KEY (coordinatorID)
         REFERENCES HiringCoordinator (coordinatorID)
