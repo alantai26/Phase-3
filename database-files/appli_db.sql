@@ -496,7 +496,16 @@ INSERT INTO CareerCoach (firstName, lastName, email) VALUES
 ('Sasha', 'Croll', 'scroll10@amazon.de'),
 ('Anderson', 'Whichelow', 'awhichelow11@noaa.gov'),
 ('Zsazsa', 'Heckle', 'zheckle12@booking.com'),
-('Lindon', 'Maving', 'lmaving13@dropbox.com');
+('Lindon', 'Maving', 'lmaving13@dropbox.com'),
+('Piper', 'Holleran', 'pholleran51@example.com'),
+('Rhett', 'Merriweather', 'rmerriweather52@example.com'),
+('Selena', 'Trucco', 'strucco53@example.com'),
+('Damon', 'Kerridge', 'dkerridge54@example.com'),
+('Yvonne', 'Saddler', 'ysaddler55@example.com'),
+('Quinton', 'Brackstone', 'qbrackstone56@example.com'),
+('Arielle', 'Goddard', 'agoddard57@example.com'),
+('Kamren', 'Derrickson', 'kderrickson58@example.com'),
+('Otto', 'Feldman', 'ofeldman59@example.com');
 
 
 
@@ -606,9 +615,17 @@ INSERT INTO Student (firstName, lastName, email, major, graduationDate, coachID)
 ('Tarrance', 'Suter', 'tsuter10@miitbeian.gov.cn', 'Business Administration', '2027-08-27', 39),
 ('Carlyn', 'Willavoys', 'cwillavoys11@prlog.org', 'Nursing', '2028-11-04', 40),
 ('Crissie', 'Yurov', 'cyurov12@umn.edu', 'Nursing', '2029-02-10', 41),
-('Titus', 'Lippi', 'tlippi13@forbes.com', 'Nursing', '2029-10-14', 42);
+('Titus', 'Lippi', 'tlippi13@forbes.com', 'Nursing', '2029-10-14', 42),
+('Rivka', 'Trembath', 'rtrembath43@example.com', 'Computer Science', '2028-06-14', 43),
+('Harlan', 'Simmonds', 'hsimmonds44@example.com', 'Data Science', '2027-12-02', 44),
+('Melody', 'Kershaw', 'mkershaw45@example.com', 'Geology', '2029-04-19', 45),
+('Jadie', 'Farnell', 'jfarnell46@example.com', 'Nursing', '2026-11-05', 46),
+('Corbin', 'Yeatman', 'cyeatman47@example.com', 'Business Administration', '2028-09-01', 47),
+('Austen', 'Bradnock', 'abradnock48@example.com', 'Consulting', '2027-03-22', 48),
+('Nolene', 'Wickramsinghe', 'nwickramsinghe49@example.com', 'Healthcare Management', '2029-07-28', 49),
+('Jarod', 'Montell', 'jmontell50@example.com', 'Data Science', '2027-01-11', 50);
 
-INSERT INTO SystemConfigurations (daysToBackup, dataRetentionTime, backupSchedule, 
+INSERT INTO SystemConfigurations (daysToBackup, dataRetentionTime, backupSchedule,
                                   alertThresholdCPU, lastModifiedDate, alertThresholdQueryTime,
                                   maintenanceStartDateTime, maintenanceEndDateTime, adminID)
 VALUES (20, NULL, '2025-07-10 15:41:00', FALSE, NULL, FALSE, NULL, NULL, 1),
@@ -619,7 +636,7 @@ INSERT INTO ResourceUsage (timeStamp, activeUsers, numApplications, dbSize, cpuU
 VALUES ('2025-10-10 15:41:00', 1, 2, '100 GB', 0.67, 1),
        ('2025-10-10 15:41:00', 0, 0, '1 GB', 0.50, 1);
 
-INSERT INTO ResourceUsage 
+INSERT INTO ResourceUsage
 (timeStamp, activeUsers, numApplications, dbSize, cpuUsagePct, adminID)
 VALUES
 ('2025-10-01 09:00:00', 45, 120,  '72 GB',  48.3, 1),
@@ -656,7 +673,7 @@ VALUES
 
 
 INSERT INTO PerformanceMetric (type, unit, measurement, timeStamp, adminID)
-VALUES 
+VALUES
 ('response time', 'ms', 122.4, NOW() - INTERVAL 18 HOUR, 1),
 ('response time', 'ms', 140.8, NOW() - INTERVAL 22 HOUR, 1),
 ('query frequency', 'queries/min', 600, NOW() - INTERVAL 10 HOUR, 1),
@@ -759,7 +776,7 @@ INSERT INTO StudentProgressMetrics (progressID, studentID, lastActivityDate, off
 VALUES (155551, 1, '2024-06-10', 0, 0, 0),
        (155552, 2, '2025-06-10', 1, 1, 1);
 
-INSERT INTO StudentProgressMetrics 
+INSERT INTO StudentProgressMetrics
 (progressID, studentID, lastActivityDate, offersReceived, interviewsScheduled, numJobApplied)
 VALUES
 (300001, 1,  '2024-03-12', 0, 1, 12),
@@ -801,16 +818,26 @@ VALUES
 (300037, 37, '2025-11-03', 0, 1, 18),
 (300038, 38, '2025-11-16', 2, 4, 36),
 (300039, 39, '2025-12-01', 1, 3, 31),
-(300040, 40, '2025-12-15', 0, 0, 7);
+(300040, 40, '2025-12-15', 0, 0, 7),
+(300041, 41, '2025-12-22', 2, 3, 30),
+(300042, 42, '2025-12-28', 0, 1, 12),
+(300043, 43, '2026-01-05', 1, 2, 19),
+(300044, 44, '2026-01-12', 3, 5, 44),
+(300045, 45, '2026-01-20', 0, 0, 8),
+(300046, 46, '2026-01-27', 2, 4, 38),
+(300047, 47, '2026-02-03', 1, 1, 17),
+(300048, 48, '2026-02-10', 0, 0, 6),
+(300049, 49, '2026-02-18', 3, 6, 50),
+(300050, 50, '2026-02-25', 1, 2, 22);
 
 
-INSERT INTO JobListing (listingID, postingID, listingStatus, datePublished, expiresOn, 
+INSERT INTO JobListing (listingID, postingID, listingStatus, datePublished, expiresOn,
                         lastChecked, postingURL, platformID)
 VALUES (166661, 1, 'Up', '2024-06-10', NULL, NULL, 'https://www.linkedin.com/jobs/123', 1),
-       (166662, 2, 'Down', '2024-06-10', '2024-06-10', NULL, 
+       (166662, 2, 'Down', '2024-06-10', '2024-06-10', NULL,
         'https://northeastern.com/students/jobs/321', 2);
 
-INSERT INTO JobListing 
+INSERT INTO JobListing
 (listingID, postingID, listingStatus, datePublished, expiresOn, lastChecked, postingURL, platformID)
 VALUES
 (200000, 1,  'Active',  '2024-02-14', '2025-02-14', '2025-03-01 10:15:00', 'https://jobs.example.com/200000', 1),
@@ -844,39 +871,212 @@ VALUES
 (200028, 29, 'Active',  '2024-09-14', NULL,         '2025-08-22 16:20:00', 'https://jobs.example.com/200028', 4),
 (200029, 30, 'Expired', '2024-03-06', '2024-11-01', '2025-01-20 09:05:00', 'https://jobs.example.com/200029', 5);
 
-
 -- NO EXTRA DATA NEEDED
 INSERT INTO Report (generatedDate, summary, coachID)
-VALUES ('2024-06-10', 'I did not listen', 1),
-       ('2025-06-10', 'Good guy', 2);
+VALUES
+('2024-01-05', 'Monthly summary', 1),
+('2024-01-12', 'Student progress review', 2),
+('2024-01-19', 'Quarterly update', 3),
+('2024-01-26', 'Career advice summary', 4),
+('2024-02-02', 'Monthly check-in', 5),
+('2024-02-09', 'Progress evaluation', 6),
+('2024-02-16', 'Student engagement review', 7),
+('2024-02-23', 'Weekly summary', 8),
+('2024-03-01', 'Monthly performance report', 9),
+('2024-03-08', 'Progress metrics update', 10),
+('2024-03-15', 'Career development report', 11),
+('2024-03-22', 'Student activity review', 12),
+('2024-03-29', 'Monthly check-in', 13),
+('2024-04-05', 'Progress evaluation', 14),
+('2024-04-12', 'Student engagement review', 15),
+('2024-04-19', 'Weekly summary', 16),
+('2024-04-26', 'Monthly performance report', 17),
+('2024-05-03', 'Progress metrics update', 18),
+('2024-05-10', 'Career development report', 19),
+('2024-05-17', 'Student activity review', 20),
+('2024-05-24', 'Monthly check-in', 21),
+('2024-05-31', 'Progress evaluation', 22),
+('2024-06-07', 'Student engagement review', 23),
+('2024-06-14', 'Weekly summary', 24),
+('2024-06-21', 'Monthly performance report', 25),
+('2024-06-28', 'Progress metrics update', 26),
+('2024-07-05', 'Career development report', 27),
+('2024-07-12', 'Student activity review', 28),
+('2024-07-19', 'Monthly check-in', 29),
+('2024-07-26', 'Progress evaluation', 30);
+
 
 -- NO EXTRA DATA NEEDED
 INSERT INTO ReportItem (itemID, reportID, studentID, recommendations, notes, keyFindings)
-VALUES (188881, 1, 1, 'idk', 'none', 'none'),
-       (188882, 2, 2, 'Apply to more', 'applied to little', 'needs to apply to more');
+VALUES
+(188881, 1, 1, 'Improve resume', 'Needs to update skills section', 'Resume outdated'),
+(188882, 2, 2, 'Apply to more jobs', 'Applied to few positions', 'Low application count'),
+(188883, 3, 3, 'Prepare for interviews', 'Interview practice needed', 'Struggles with behavioral questions'),
+(188884, 4, 4, 'Network more', 'Limited LinkedIn activity', 'Weak professional connections'),
+(188885, 5, 5, 'Improve portfolio', 'Portfolio incomplete', 'Missing key projects'),
+(188886, 6, 6, 'Follow up on applications', 'No follow-up emails sent', 'Low response rate'),
+(188887, 7, 7, 'Attend career workshops', 'Missed workshop opportunities', 'Limited career guidance exposure'),
+(188888, 8, 8, 'Improve LinkedIn profile', 'Profile missing details', 'Low visibility online'),
+(188889, 9, 9, 'Practice coding challenges', 'Few practice sessions', 'Not ready for technical interviews'),
+(188890, 10, 10, 'Seek mentorship', 'No mentor assigned', 'Lack of guidance'),
+(188891, 11, 11, 'Enhance soft skills', 'Communication skills weak', 'Needs improvement in teamwork'),
+(188892, 12, 12, 'Apply to internships', 'Few applications sent', 'Limited hands-on experience'),
+(188893, 13, 13, 'Attend networking events', 'Rarely participates', 'Missed opportunities'),
+(188894, 14, 14, 'Update resume frequently', 'Resume outdated', 'Needs attention'),
+(188895, 15, 15, 'Prepare portfolio', 'Incomplete projects', 'Portfolio weak'),
+(188896, 16, 16, 'Follow up on emails', 'No follow-ups', 'Communication gap'),
+(188897, 17, 17, 'Improve LinkedIn networking', 'Few connections', 'Low online presence'),
+(188898, 18, 18, 'Practice interview questions', 'Unprepared', 'Needs mock interviews'),
+(188899, 19, 19, 'Attend skill workshops', 'Missed sessions', 'Skill gaps identified'),
+(188900, 20, 20, 'Improve coding portfolio', 'Incomplete challenges', 'Not interview-ready'),
+(188901, 21, 1, 'Apply to more companies', 'Limited submissions', 'Low activity'),
+(188902, 22, 2, 'Seek mentorship', 'No mentor yet', 'Guidance needed'),
+(188903, 23, 3, 'Practice soft skills', 'Weak communication', 'Needs coaching'),
+(188904, 24, 4, 'Update resume', 'Old format', 'Resume needs improvement'),
+(188905, 25, 5, 'Attend career fairs', 'Few attended', 'Networking low'),
+(188906, 26, 6, 'Improve portfolio', 'Projects incomplete', 'Weak presentation'),
+(188907, 27, 7, 'Follow up applications', 'No follow-ups', 'Missed responses'),
+(188908, 28, 8, 'Enhance LinkedIn', 'Profile minimal', 'Low engagement'),
+(188909, 29, 9, 'Practice technical interviews', 'Unprepared', 'Needs practice'),
+(188910, 30, 10, 'Seek mentorship', 'No guidance', 'Mentor needed'),
+(188911, 1, 11, 'Attend workshops', 'Missed opportunities', 'Skill gaps'),
+(188912, 2, 12, 'Update resume', 'Incomplete', 'Needs improvement'),
+(188913, 3, 13, 'Improve portfolio', 'Few projects', 'Low showcase'),
+(188914, 4, 14, 'Apply to more positions', 'Limited applications', 'Low reach'),
+(188915, 5, 15, 'Practice interviews', 'Unprepared', 'Needs coaching'),
+(188916, 6, 16, 'Networking', 'Few connections', 'Professional network small'),
+(188917, 7, 17, 'Follow up emails', 'Not sent', 'Low communication'),
+(188918, 8, 18, 'Attend career fairs', 'Missed', 'Networking lacking'),
+(188919, 9, 19, 'Portfolio update', 'Incomplete', 'Showcase weak'),
+(188920, 10, 20, 'Practice coding', 'Few attempts', 'Technical readiness low'),
+(188921, 11, 1, 'Seek mentorship', 'No mentor', 'Guidance required'),
+(188922, 12, 2, 'Soft skills', 'Weak', 'Communication needs work'),
+(188923, 13, 3, 'Resume update', 'Old', 'Outdated'),
+(188924, 14, 4, 'Apply more', 'Low submissions', 'Needs more activity'),
+(188925, 15, 5, 'Interview practice', 'Unprepared', 'Skill gaps'),
+(188926, 16, 6, 'Portfolio enhancement', 'Incomplete', 'Weak showcase'),
+(188927, 17, 7, 'Follow-ups', 'Missed', 'Communication gap'),
+(188928, 18, 8, 'LinkedIn networking', 'Few connections', 'Low presence'),
+(188929, 19, 9, 'Technical prep', 'Limited practice', 'Interview readiness low'),
+(188930, 20, 10, 'Mentorship', 'No mentor', 'Guidance needed'),
+(188931, 21, 11, 'Workshops', 'Missed sessions', 'Skill gaps'),
+(188932, 22, 12, 'Resume', 'Old format', 'Needs update'),
+(188933, 23, 13, 'Portfolio', 'Incomplete', 'Weak showcase'),
+(188934, 24, 14, 'Applications', 'Few submitted', 'Activity low'),
+(188935, 25, 15, 'Interviews', 'Unprepared', 'Needs practice'),
+(188936, 26, 16, 'Networking', 'Limited', 'Connections low'),
+(188937, 27, 17, 'Follow-ups', 'Not done', 'Communication weak'),
+(188938, 28, 18, 'Career fairs', 'Missed', 'Networking lacking'),
+(188939, 29, 19, 'Portfolio', 'Incomplete', 'Weak showcase'),
+(188940, 30, 20, 'Technical prep', 'Few practice', 'Low readiness');
+
 
 -- NO EXTRA DATA NEEDED
+-- INSERT INTO coachSPM (coachID, progressID, studentID)
+-- VALUES (1, 155551, 1),
+--        (2, 155552, 2);
+
 INSERT INTO coachSPM (coachID, progressID, studentID)
-VALUES (1, 155551, 1),
-       (2, 155552, 2);
+VALUES
+-- 1–40
+(1, 155551, 1),(2, 155552, 2),(3, 300001, 1),(4, 300002, 2),(5, 300003, 3),
+(6, 300004, 4),(7, 300005, 5),(8, 300006, 6),(9, 300007, 7),(10, 300008, 8),
+(11, 300009, 9),(12, 300010, 10),(13, 300011, 11),(14, 300012, 12),(15, 300013, 13),
+(16, 300014, 14),(17, 300015, 15),(18, 300016, 16),(19, 300017, 17),(20, 300018, 18),
+(21, 300019, 19),(22, 300020, 20),(23, 300021, 21),(24, 300022, 22),(25, 300023, 23),
+(26, 300024, 24),(27, 300025, 25),(28, 300026, 26),(29, 300027, 27),(30, 300028, 28),
+(31, 300029, 29),(32, 300030, 30),(33, 300031, 31),(34, 300032, 32),(35, 300033, 33),
+(36, 300034, 34),(37, 300035, 35),(38, 300036, 36),(39, 300037, 37),(40, 300038, 38),
 
-INSERT INTO Resume (resumeID, studentID, imageURl, label)
-VALUES (199991, 1, 'imageurl.com', 'Final Resume'),
-       (199992, 2, 'word.com', 'Updated Resume'),
-       (199993, 1, '/docs/resumes/student_888881.pdf', 'Software Engineer Focused'),
-       (199994, 43, '/docs/resumes/student_888882.pdf', 'Data Science Focused');
+-- 41–80
+(1, 300039, 39),(2, 300040, 40),(3, 155551, 1),(4, 155552, 2),(5, 300001, 1),
+(6, 300002, 2),(7, 300003, 3),(8, 300004, 4),(9, 300005, 5),(10, 300006, 6),
+(11, 300007, 7),(12, 300008, 8),(13, 300009, 9),(14, 300010, 10),(15, 300011, 11),
+(16, 300012, 12),(17, 300013, 13),(18, 300014, 14),(19, 300015, 15),(20, 300016, 16),
+(21, 300017, 17),(22, 300018, 18),(23, 300019, 19),(24, 300020, 20),(25, 300021, 21),
+(26, 300022, 22),(27, 300023, 23),(28, 300024, 24),(29, 300025, 25),(30, 300026, 26),
+(31, 300027, 27),(32, 300028, 28),(33, 300029, 29),(34, 300030, 30),(35, 300031, 31),
+(36, 300032, 32),(37, 300033, 33),(38, 300034, 34),(39, 300035, 35),(40, 300036, 36),
 
-INSERT INTO JobApplication (companyName, position, stage, dateApplied, lastUpdated, 
+-- 81–125
+(1, 300037, 37),(2, 300038, 38),(3, 300039, 39),(4, 300040, 40),(5, 155551, 1),
+(6, 155552, 2),(7, 300001, 1),(8, 300002, 2),(9, 300003, 3),(10, 300004, 4),
+(11, 300005, 5),(12, 300006, 6),(13, 300007, 7),(14, 300008, 8),(15, 300009, 9),
+(16, 300010, 10),(17, 300011, 11),(18, 300012, 12),(19, 300013, 13),(20, 300014, 14),
+(21, 300015, 15),(22, 300016, 16),(23, 300017, 17),(24, 300018, 18),(25, 300019, 19),
+(26, 300020, 20),(27, 300021, 21),(28, 300022, 22),(29, 300023, 23),(30, 300024, 24),
+(31, 300025, 25),(32, 300026, 26),(33, 300027, 27),(34, 300028, 28),(35, 300029, 29),
+(36, 300030, 30),(37, 300031, 31),(38, 300032, 32),(39, 300033, 33),(40, 300034, 34),
+(1, 300035, 35),(2, 300036, 36),(3, 300037, 37),(4, 300038, 38),(5, 300039, 39),
+(6, 300040, 40);
+
+
+INSERT INTO Resume (resumeID, studentID, imageURl, label) VALUES
+(199991, 1, 'imageurl.com', 'Final Resume'),
+(199992, 2, 'word.com', 'Updated Resume'),
+(199993, 1, '/docs/resumes/student_888881.pdf', 'Software Engineer Focused'),
+(199994, 43, '/docs/resumes/student_888882.pdf', 'Data Science Focused'),
+(199995, 3, '/docs/resumes/resume_199995.pdf', 'Internship Version'),
+(199996, 4, '/docs/resumes/resume_199996.pdf', 'Summer 2025 Resume'),
+(199997, 5, '/docs/resumes/resume_199997.pdf', 'Business Analyst Focused'),
+(199998, 6, '/docs/resumes/resume_199998.pdf', 'General Resume'),
+(199999, 7, '/docs/resumes/resume_200000.pdf', 'Marketing Focused'),
+(200000, 8, '/docs/resumes/resume_200001.pdf', 'Nursing Resume'),
+(200001, 9, '/docs/resumes/resume_200002.pdf', 'Updated Resume'),
+(200002, 10, '/docs/resumes/resume_200003.pdf', 'Final Version'),
+(200003, 11, '/docs/resumes/resume_200004.pdf', 'Tech Resume'),
+(200004, 12, '/docs/resumes/resume_200005.pdf', 'Consulting Focused'),
+(200005, 13, '/docs/resumes/resume_200006.pdf', 'Revised Resume'),
+(200006, 14, '/docs/resumes/resume_200007.pdf', 'Graduate School Resume'),
+(200007, 15, '/docs/resumes/resume_200008.pdf', 'Entry-Level Resume'),
+(200008, 16, '/docs/resumes/resume_200009.pdf', 'Updated Resume'),
+(200009, 17, '/docs/resumes/resume_200010.pdf', 'Senior Year Resume'),
+(200010, 18, '/docs/resumes/resume_200011.pdf', 'Healthcare Resume'),
+(200011, 19, '/docs/resumes/resume_200012.pdf', 'Research Oriented'),
+(200012, 20, '/docs/resumes/resume_200013.pdf', 'Data Analyst Focused'),
+(200013, 21, '/docs/resumes/resume_200014.pdf', 'Business Resume'),
+(200014, 22, '/docs/resumes/resume_200015.pdf', 'Updated Resume'),
+(200015, 23, '/docs/resumes/resume_200016.pdf', 'Tech Resume'),
+(200016, 24, '/docs/resumes/resume_200017.pdf', 'Cybersecurity Focused'),
+(200017, 25, '/docs/resumes/resume_200018.pdf', 'Draft Resume'),
+(200018, 26, '/docs/resumes/resume_200019.pdf', 'Final Resume'),
+(200019, 27, '/docs/resumes/resume_200020.pdf', 'Consulting Resume'),
+(200020, 28, '/docs/resumes/resume_200021.pdf', 'Business Analyst Resume'),
+(200021, 29, '/docs/resumes/resume_200022.pdf', 'Revised Resume'),
+(200022, 30, '/docs/resumes/resume_200023.pdf', 'Geology Resume'),
+(200023, 31, '/docs/resumes/resume_200024.pdf', 'Nursing Resume'),
+(200024, 32, '/docs/resumes/resume_200025.pdf', 'Business Administration Resume'),
+(200025, 33, '/docs/resumes/resume_200026.pdf', 'Updated Resume'),
+(200026, 34, '/docs/resumes/resume_200027.pdf', 'Earth Sciences Focused'),
+(200027, 35, '/docs/resumes/resume_200028.pdf', 'MBA Resume'),
+(200028, 36, '/docs/resumes/resume_200029.pdf', 'Healthcare Management Resume'),
+(200029, 37, '/docs/resumes/resume_200030.pdf', 'Consulting Focused'),
+(200030, 38, '/docs/resumes/resume_200031.pdf', 'Updated Resume'),
+(200031, 39, '/docs/resumes/resume_200032.pdf', 'Management Resume'),
+(200032, 40, '/docs/resumes/resume_200033.pdf', 'Nursing Resume'),
+(200033, 41, '/docs/resumes/resume_200034.pdf', 'Revised Resume'),
+(200034, 42, '/docs/resumes/resume_200035.pdf', 'Clinical Resume'),
+(200035, 43, '/docs/resumes/resume_200036.pdf', 'Data Science Resume v2'),
+(200036, 44, '/docs/resumes/resume_200037.pdf', 'Engineering Resume'),
+(200037, 45, '/docs/resumes/resume_200038.pdf', 'Internship Resume'),
+(200038, 46, '/docs/resumes/resume_200039.pdf', 'Updated Resume'),
+(200039, 47, '/docs/resumes/resume_200040.pdf', 'Full Stack Resume'),
+(200040, 48, '/docs/resumes/resume_200041.pdf', 'General Resume'),
+(200041, 49, '/docs/resumes/resume_200042.pdf', 'Analyst Resume'),
+(200042, 50, '/docs/resumes/resume_200043.pdf', 'Final Resume');
+
+
+INSERT INTO JobApplication (companyName, position, stage, dateApplied, lastUpdated,
                             studentID, listingID, postingID, resumeID)
-VALUES ('McDonald''s', 'burger flipper', 'applied', '2024-10-10', '2024-10-10', 
+VALUES ('McDonald''s', 'burger flipper', 'applied', '2024-10-10', '2024-10-10',
         1, 166661, 1, 199991),
-       ('Amazon', 'SWE', 'Rejected', '2024-10-11', '2024-10-11', 
+       ('Amazon', 'SWE', 'Rejected', '2024-10-11', '2024-10-11',
         2, 166662, 2, 199992),
-       ('Walmart', 'cashier', 'offered', '2024-10-12', '2024-10-12', 
+       ('Walmart', 'cashier', 'offered', '2024-10-12', '2024-10-12',
         1, 166661, 1, 199991);
 
-INSERT INTO JobApplication 
-    (companyName, position, stage, dateApplied, lastUpdated, jobBoard, 
+INSERT INTO JobApplication
+    (companyName, position, stage, dateApplied, lastUpdated, jobBoard,
      studentID, listingID, postingID, resumeID)
 VALUES
 ('Amazon',       'Software Engineer Intern',      'Applied',      '2024-01-15', '2024-01-16 10:15:00', 'LinkedIn',     1, 200000,  1, 199991),
@@ -936,7 +1136,7 @@ VALUES
 ('Notion',       'Product Engineer Intern',       'Interviewing', '2024-10-01', '2024-10-09 16:10:00', 'Company Site', 2, 200024, 25, 199992);
 
 
--- INSERT INTO Notification (type, dateTimeSent, coachID, studentID, applicationID, 
+-- INSERT INTO Notification (type, dateTimeSent, coachID, studentID, applicationID,
 --                           coordinatorID, listingID, postingID)
 -- VALUES ('Job application', '2024-10-10 15:41:00', 1, 1, 1, NULL, 166661, 1),
 --        ('Message', '2024-10-11 15:41:00', 2, 2, NULL, NULL, NULL, NULL),
@@ -950,7 +1150,7 @@ VALUES
 ('Message',         FALSE, '2024-10-11 15:41:01', NULL, 2, NULL, NULL, NULL, NULL);
 
 
-INSERT INTO Notification 
+INSERT INTO Notification
 (type, isRead, dateTimeSent, coachID, studentID, applicationID, coordinatorID, listingID, postingID)
 VALUES
 ('Job application', FALSE, '2025-07-02 09:15:00', 1, 1, 3,  1, 200000, 1),
@@ -1007,12 +1207,12 @@ VALUES
 ('Status Update',          TRUE,  '2025-10-16 10:30:00', 6, 9,  46,12, 200009,10),
 ('Message',                FALSE, '2025-10-18 12:10:00', 6, 9,  NULL, NULL, NULL, NULL),
 ('Job application',        FALSE, '2025-10-20 14:45:00', 7,10,  47,13, 200010,11),
-('Expiring Listing Alert', FALSE, '2025-10-22 17:15:00', 7,10,  48, NULL, 200011,12), 
+('Expiring Listing Alert', FALSE, '2025-10-22 17:15:00', 7,10,  48, NULL, 200011,12),
 ('Job application',        FALSE, '2025-11-01 09:05:00', 1, 1, 49, 14, 200012,13),
 ('Status Update',          FALSE, '2025-11-03 11:25:00', 1, 2, 50, 15, 200013,14),
 ('Message',                FALSE, '2025-11-05 13:40:00', 1, 1, NULL, NULL, NULL, NULL),
 ('Job application',        TRUE,  '2025-11-07 15:55:00', 2, 3, 51, 16, 200014,15),
-('Expiring Listing Alert', FALSE, '2025-11-09 18:20:00', 1, 1, 52, NULL, 200015,16), 
+('Expiring Listing Alert', FALSE, '2025-11-09 18:20:00', 1, 1, 52, NULL, 200015,16),
 ('Job application',        FALSE, '2025-11-12 09:30:00', 1, 1, 30, 17, 200016,17),
 ('Status Update',          TRUE,  '2025-11-15 11:10:00', 3, 4, 12, 18, 200017,18),
 ('Message',                FALSE, '2025-11-18 14:00:00', 1, 2, NULL, NULL, NULL, NULL),
@@ -1049,7 +1249,7 @@ VALUES
 ('I like how you framed your project impact.',  '2025-07-22 08:55:00', 1, 1,14),
 ('Try practicing with a friend tonight.',       '2025-07-23 09:30:00', 1, 1,15),
 ('Ping me if you get an offer update.',         '2025-07-25 12:45:00', 1, 1,16),
-('You''re very close to landing something good.', '2025-07-25 12:55:00',1, 1,16), 
+('You''re very close to landing something good.', '2025-07-25 12:55:00',1, 1,16),
 ('Hi Alice, how is your consulting search going?', '2025-09-04 09:35:00', 2, 1,27),
 ('Try adding more metrics to your resume bullets.', '2025-09-04 09:50:00', 2, 1,27),
 ('Great job applying to KPMG and Deloitte.',       '2025-09-06 11:45:00', 2, 1,28),

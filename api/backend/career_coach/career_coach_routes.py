@@ -13,6 +13,59 @@ from backend.db_connection import db
 # Create a Blueprint for career_coach
 career_coach = Blueprint("career_coach", __name__)
 
+# Get all messages between a coach and a student
+@career_coach.route("/career_coach/<int:coach_id>/messages/<int:student_id>", methods=["GET"])
+def get_messages(coach_id, student_id):
+
+    try:
+        cursor = db.get_db().cursor()
+        
+        query = """
+        SELECT m.messageID, m.content, m.dateTimeSent, 'Coach' AS sender
+        FROM Message m
+        WHERE m.studentID = %s AND m.coachID = %s
+        ORDER BY m.dateTimeSent ASC
+        """
+        cursor.execute(query, (student_id, coach_id))
+        messages = cursor.fetchall()
+        cursor.close()
+
+        return jsonify(messages), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@career_coach.route("/career_coach/<int:coach_id>/send_message", methods=["POST"])
+def send_message(coach_id):
+    data = request.get_json()
+    student_id = data.get("studentID")
+    content = data.get("content")
+
+    if not student_id or not content:
+        return jsonify({"error": "Missing studentID or content"}), 400
+
+    try:
+        conn = db.get_db()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO Notification (type, isRead, dateTimeSent, coachID, studentID)
+            VALUES (%s, %s, NOW(), %s, %s)
+        """, ("Message", False, coach_id, student_id))
+        notification_id = cursor.lastrowid
+
+        cursor.execute("""
+            INSERT INTO Message (content, dateTimeSent, studentID, coachID, notificationID)
+            VALUES (%s, NOW(), %s, %s, %s)
+        """, (content, student_id, coach_id, notification_id))
+
+        conn.commit()
+        cursor.close()
+        return jsonify({"message": "Message sent successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 # Get notifications for a coach
 @career_coach.route("/career_coach/<int:coach_id>/notifications", methods=["GET"])
 def get_notifications(coach_id):
