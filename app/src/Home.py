@@ -83,7 +83,7 @@ if st.button('Act as Sophia, a hiring coordinator reviewing applications for ope
     st.session_state['role'] = 'coordinator'  # Changed from 'administrator'
     st.session_state['first_name'] = 'Sophia'  # Changed from 'SysAdmin'
     logger.info("Logging in as Hiring Coordinator")
-    st.switch_page('pages/40_Sophia_Home.py')  # Changed to your page
+    st.switch_page('pages/30_HiringCoord_Home.py')  # Changed to your page
 
 
 
