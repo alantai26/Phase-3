@@ -369,7 +369,7 @@ CREATE TABLE JobApplication
         ON UPDATE CASCADE,
     CONSTRAINT fk_26 FOREIGN KEY (listingID, postingID)
         REFERENCES JobListing (listingID, postingID)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
     CONSTRAINT fk_27 FOREIGN KEY (resumeID, studentID)
         REFERENCES Resume (resumeID, studentID)
@@ -409,7 +409,7 @@ CREATE TABLE Notification
         ON UPDATE CASCADE,
     CONSTRAINT fk_35 FOREIGN KEY (listingID, postingID)
         REFERENCES JobListing (listingID, postingID)
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
         ON UPDATE CASCADE,
     INDEX indexNotificationID (notificationID)
 );

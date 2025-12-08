@@ -5,6 +5,52 @@ from mysql.connector import Error
 # Create a Blueprint for hiring coordinator routes
 hiring_coord = Blueprint("hiring_coord", __name__)
 
+
+@hiring_coord.route("/coordinator/<int:coordinator_id>/applications", methods=["GET"])
+def get_applications_by_coordinator(coordinator_id):
+    """
+    Returns all job applications for a given coordinator with platform info.
+    """
+    try:
+        cursor = db.get_db().cursor()
+
+        # Query to get applications with platform and posting info
+        query = """
+        SELECT 
+            ja.applicationID,
+            ja.studentID,
+            ja.postingID,
+            ja.listingID,
+            ja.companyName,
+            ja.position,
+            ja.stage,
+            ja.dateApplied,
+            ja.lastUpdated,
+            ja.jobBoard,
+            jp.title AS postingTitle,
+            jp.roleType,
+            jp.location,
+            jp.department,
+            jl.platformID,
+            p.name AS platform
+        FROM JobApplication ja
+        JOIN JobPosting jp ON ja.postingID = jp.postingID
+        JOIN JobListing jl 
+           ON ja.listingID = jl.listingID 
+            AND ja.postingID = jl.postingID
+        JOIN Platform p ON jl.platformID = p.platformID
+        WHERE jp.coordinatorID = %s
+        ORDER BY ja.dateApplied DESC
+        """
+        cursor.execute(query, (coordinator_id,))
+        applications = cursor.fetchall()
+        cursor.close()
+
+        return jsonify(applications), 200
+
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+
 # Get all job listings for a coordinator, including platform and status
 @hiring_coord.route("/coordinator/<int:coordinator_id>/listings", methods=["GET"])
 def get_coordinator_listings(coordinator_id):
@@ -115,79 +161,6 @@ def create_job_posting(coordinator_id):
     except Error as e:
         return jsonify({"error": str(e)}), 500
 
-
-# Update Job Postings
-@hiring_coord.route("/postings/<int:posting_id>/status", methods=["PUT"])
-def update_posting_status(posting_id):
-    try:
-        data = request.get_json()
-
-        if 'status' not in data:
-            return jsonify({"error": "Missing 'status' field"}), 400
-
-        cursor = db.get_db().cursor()
-
-        # Depending on if status is closed, cater queries
-        if data['status'] == 'Closed':
-            query = """
-            UPDATE JobPosting
-            SET status = %s, dateClosed = NOW()
-            WHERE postingID = %s
-            """
-        else:
-            query = """
-            UPDATE JobPosting
-            SET status = %s
-            WHERE postingID = %s
-            """
-
-        cursor.execute(query, (data['status'], posting_id))
-        db.get_db().commit()
-        rows_affected = cursor.rowcount
-        cursor.close()
-
-        if rows_affected == 0:
-            return jsonify({"message": "Posting not found"}), 404
-
-        return jsonify({
-            "message": "Status of posting has been updated successfully",
-            "postingID": posting_id,
-            "newStatus": data['status']
-        }), 200
-    except Error as e:
-        return jsonify({"error": str(e)}), 500
-
-
-# Get the platform analytics
-@hiring_coord.route("/coordinator/<int:coordinator_id>/platform-analytics", methods=["GET"])
-def get_platform_analytics(coordinator_id):
-    try:
-        cursor = db.get_db().cursor()
-        query = """
-        SELECT
-            p.name AS platformName,
-            p.platformID,
-            COUNT(DISTINCT ja.applicationID) AS totalApplicants,
-            COUNT(DISTINCT CASE WHEN ja.stage = 'Hired' THEN ja.applicationID END) AS totalHires,
-            ROUND(COUNT(DISTINCT CASE WHEN ja.stage = 'Hired' THEN ja.applicationID END) * 100.0 / 
-                  NULLIF(COUNT(DISTINCT ja.applicationID), 0), 2) AS hireRate
-        FROM Platform p
-        JOIN JobListing jl ON p.platformID = jl.platformID
-        JOIN JobPosting jp ON jl.postingID = jp.postingID
-        LEFT JOIN JobApplication ja ON jl.listingID = ja.listingID
-        WHERE jp.coordinatorID = %s
-        GROUP BY p.platformID, p.name
-        ORDER BY totalHires DESC
-        """
-        cursor.execute(query, (coordinator_id,))
-        result = cursor.fetchall()
-        cursor.close()
-
-        return jsonify(result), 200
-    except Error as e:
-        return jsonify({"error": str(e)}), 500
-
-
 # Get the expiring listing notifications
 @hiring_coord.route("/coordinator/<int:coordinator_id>/expiring-listings", methods=["GET"])
 def get_expiring_listings(coordinator_id):
@@ -222,7 +195,6 @@ def get_expiring_listings(coordinator_id):
         return jsonify(result), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
-
 
 # Delete a job posting
 @hiring_coord.route("/postings/<int:posting_id>", methods=["DELETE"])

@@ -154,3 +154,26 @@ else:
   df = df[desired_order]
 
   st.dataframe(df, use_container_width=True)
+
+# =========================
+# Delete a Job Posting
+# =========================
+st.subheader("Delete a Job Posting", divider="gray")
+posting_id = st.text_input("Enter Posting ID to delete:")
+
+if st.button("Delete Posting"):
+    if posting_id:
+        try:
+            delete_url = f"http://web-api:4000/app_tracker/postings/{posting_id}"
+            response = requests.delete(delete_url)
+            if response.status_code == 200:
+                st.success(f"Posting {posting_id} deleted successfully.")
+                st.rerun()
+            elif response.status_code == 404:
+                st.warning(f"Posting {posting_id} not found.")
+            else:
+                st.error(f"Failed to delete posting: {response.text}")
+        except Exception as e:
+            st.error(f"Error deleting posting: {e}")
+    else:
+        st.warning("Please enter a valid Posting ID.")
