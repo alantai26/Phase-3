@@ -80,10 +80,11 @@ if st.button('Act as Sophia, a hiring coordinator reviewing applications for ope
             type = 'primary', 
             use_container_width=True):
     st.session_state['authenticated'] = True
-    st.session_state['role'] = 'coordinator'  # Changed from 'administrator'
-    st.session_state['first_name'] = 'Sophia'  # Changed from 'SysAdmin'
+    st.session_state['role'] = 'coordinator'
+    st.session_state['first_name'] = 'Sophia'
+    st.session_state['coordinator_id'] = 1
     logger.info("Logging in as Hiring Coordinator")
-    st.switch_page('pages/30_HiringCoord_Home.py')  # Changed to your page
+    st.switch_page('pages/30_HiringCoord_Home.py')
 
 
 

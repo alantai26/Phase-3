@@ -5,6 +5,37 @@ from mysql.connector import Error
 # Create a Blueprint for hiring coordinator routes
 hiring_coord = Blueprint("hiring_coord", __name__)
 
+# Get all job listings for a coordinator, including platform and status
+@hiring_coord.route("/coordinator/<int:coordinator_id>/listings", methods=["GET"])
+def get_coordinator_listings(coordinator_id):
+    try:
+        cursor = db.get_db().cursor()
+
+        query = """
+        SELECT
+            jp.postingID,
+            jp.title,
+            jp.roleType,
+            jp.status AS postingStatus,
+            jl.listingID,
+            jl.platformID,
+            p.name AS platform,
+            jl.listingStatus AS listingStatus
+        FROM JobPosting jp
+        LEFT JOIN JobListing jl ON jp.postingID = jl.postingID
+        LEFT JOIN Platform p ON jl.platformID = p.platformID
+        WHERE jp.coordinatorID = %s
+        ORDER BY jp.datePosted DESC
+        """
+
+        cursor.execute(query, (coordinator_id,))
+        result = cursor.fetchall()
+        cursor.close()
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Get all the job postings for a coordinator
 @hiring_coord.route("/coordinator/<int:coordinator_id>/postings", methods=["GET"])
@@ -19,11 +50,7 @@ def get_coordinator_postings(coordinator_id):
             jp.postingID,
             jp.title,
             jp.roleType,
-            jp.location,
-            jp.department,
             jp.status,
-            jp.datePosted,
-            jp.dateClosed,
             COUNT(DISTINCT ja.applicationID) AS totalApplicants
         FROM JobPosting jp
         LEFT JOIN JobApplication ja ON jp.postingID = ja.postingID
@@ -35,9 +62,6 @@ def get_coordinator_postings(coordinator_id):
         cursor.execute(query, (coordinator_id,))
         result = cursor.fetchall()
         cursor.close()
-
-        if not result:
-            return jsonify({"message": "Postings not found for this coordinator"}), 404
 
         return jsonify(result), 200
     except Error as e:
@@ -189,6 +213,7 @@ def get_expiring_listings(coordinator_id):
           AND jl.expiresOn IS NOT NULL
           AND jl.expiresOn <= DATE_ADD(NOW(), INTERVAL %s DAY)
         ORDER BY jl.expiresOn ASC
+        LIMIT 1
         """
         cursor.execute(query, (coordinator_id, days))
         result = cursor.fetchall()
