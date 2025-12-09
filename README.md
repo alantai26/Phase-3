@@ -2,6 +2,12 @@
 
 Appli-Tracker is a centralized dashboard designed to organize the job and co-op application process for university students, career coaches, hiring coordinators, and system administrators. Instead of juggling NUWorks, LinkedIn, Handshake, spreadsheets, and trackers, users get one platform where all applications, postings, analytics, performance metrics, and communication tools come together.
 
+## Project Links
+
+Demonstration Video: https://youtu.be/wUVIpp1FZcE
+Submission Doc: https://docs.google.com/document/d/1TmlUUN2x7ps-J0oeWKFS9AE_49s6qqudHZ14uU2oRSI/edit?usp=sharing
+Github Repo: https://github.com/alantai26/Phase-3
+
 ## Team Members
 
 This project was developed by:
