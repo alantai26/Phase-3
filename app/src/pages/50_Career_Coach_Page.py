@@ -79,9 +79,8 @@ st.title('Career Coach Dashboard')
 tab1, = st.tabs(["Career Coach Dashboard"])
 
 with tab1:
-  # ==============================================
+
   # Summary Metrics
-  # ==============================================
   st.subheader("Summary Metrics", divider="gray")
   col1, col2, col3 = st.columns(3)
 
@@ -94,10 +93,7 @@ with tab1:
   col3.write(f"In Progress: {r3}")
 
 
-  # ==============================================
   # Student Activity Table with Filters
-  # ==============================================
-
   st.subheader("Student Activity", divider="gray")
   col_stage, col_sort, col_search, col_add, col_remove = st.columns(5)
 
@@ -163,10 +159,7 @@ with tab1:
   st.dataframe(df, use_container_width=True)
 
 
-  # ==============================================
   # Charts & Insights
-  # ==============================================
-
   st.subheader("Charts & Insights", divider="gray")
   col_pie, col_bar = st.columns(2)
   
@@ -177,10 +170,7 @@ with tab1:
 
   if not applications_df.empty:
 
-  # ==============================================
   # Pie Chart
-  # ==============================================
-
     # Create normalized category column
     applications_df['stage_category'] = applications_df['stage'].str.lower().map({
         # Applied
@@ -210,10 +200,7 @@ with tab1:
     col_pie.pyplot(fig1, use_container_width=True)
 
 
-  # ==============================================
   # Bar Chart 
-  # ==============================================
-
     # Keep only "Offered"
     offers_df = applications_df[applications_df['stage_category'] == "Offered"].copy()
 

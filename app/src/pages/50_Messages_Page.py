@@ -12,9 +12,7 @@ SideBarLinks()
 
 st.title("Career Coach Messages")
 
-# ---------------------------
-# Fetch students
-# ---------------------------
+
 students = []
 try:
     resp = requests.get(f"http://web-api:4000/app_tracker/career_coach/{coach_id}/students")
@@ -34,14 +32,8 @@ if "messages" not in st.session_state:
 if "selected_student" not in st.session_state:
     st.session_state.selected_student = None
 
-# ---------------------------
-# Layout: Two Columns
-# ---------------------------
 left, right = st.columns([1, 2])
 
-# ---------------------------
-# Left: Student List
-# ---------------------------
 with left:
     st.subheader("Student List")
     st.write("---")
@@ -71,9 +63,7 @@ with left:
                 st.error(f"Error fetching messages: {str(e)}")
                 st.session_state.messages[student_id] = []
 
-# ---------------------------
-# Right: Conversation
-# ---------------------------
+
 with right:
     st.subheader("Conversations")
     st.write("---")

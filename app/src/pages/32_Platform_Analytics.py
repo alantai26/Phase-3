@@ -83,9 +83,7 @@ else:
             col_bar.write("No application data for selected filters.")
             col_pie.write("No application data for selected filters.")
         else:
-            # ===========================
             # Bar Chart: Applicants by Platform
-            # ===========================
             platform_counts = applications_df.groupby('platform').size().sort_values(ascending=False)
             if platform_counts.empty:
                 col_bar.write("No application data for bar chart.")
@@ -101,9 +99,7 @@ else:
                 ax2.yaxis.set_major_locator(mticker.MaxNLocator(integer=True))
                 col_bar.pyplot(fig2, use_container_width=True)
 
-            # ===========================
             # Pie Chart: Successful Hires by Platform
-            # ===========================
             applications_df['stage_category'] = applications_df['stage'].str.lower().map({
                 "applied": "Applied",
                 "interviewing": "Interviewing",

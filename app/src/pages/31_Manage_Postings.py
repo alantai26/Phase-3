@@ -73,9 +73,7 @@ def get_postings_with_platforms(coordinator_id):
 
     return merged_df
 
-# ============
 # Top Row: Expiring Listing + Add Posting Button
-# ============
 col1, col2 = st.columns([3, 1])
 
 # Column 1: Expiring Listing
@@ -93,9 +91,8 @@ if col2.button("Add Posting"):
     st.switch_page("pages/33_Create_Posting.py")
 
 
-# ============
+
 # Filters Row
-# ============
 status1, platforms1, sort1 = st.columns(3)
 
 with status1:
@@ -155,9 +152,7 @@ else:
 
   st.dataframe(df, use_container_width=True)
 
-# =========================
 # Delete a Job Posting
-# =========================
 st.subheader("Delete a Job Posting", divider="gray")
 posting_id = st.text_input("Enter Posting ID to delete:")
 
