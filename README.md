@@ -5,7 +5,9 @@ Appli-Tracker is a centralized dashboard designed to organize the job and co-op 
 ## Project Links
 
 Demonstration Video: https://youtu.be/MW1a-I_FHPQ
+
 Submission Doc: https://docs.google.com/document/d/1TmlUUN2x7ps-J0oeWKFS9AE_49s6qqudHZ14uU2oRSI/edit?usp=sharing
+
 Github Repo: https://github.com/alantai26/Phase-3
 
 ## Team Members
